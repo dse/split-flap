@@ -1,0 +1,41 @@
+{
+  "name": "split-flap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "npx gulp sass",
+    "dev": "npx gulp dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dse/split-flap.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dse/split-flap/issues"
+  },
+  "homepage": "https://github.com/dse/split-flap#readme",
+  "dependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "autoprefixer": "^10.4.21",
+    "browser-sync": "^3.0.4",
+    "gulp": "^5.0.1",
+    "gulp-postcss": "^10.0.0",
+    "gulp-rollup": "^2.17.0",
+    "gulp-sass": "^6.0.1",
+    "node-sass": "^9.0.0",
+    "postcss": "^8.5.6",
+    "rollup": "^4.45.3",
+    "rollup-stream": "^1.24.1",
+    "sass": "^1.89.2",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}

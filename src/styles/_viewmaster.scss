@@ -1,0 +1,32 @@
+.viewmaster {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    padding: var(--viewmaster-padding);
+    background-color: black;
+    border-radius: var(--viewmaster-border-radius);
+    gap: var(--viewmaster-split-flap-gap);
+    border-bottom: var(--viewmaster-border-width) solid var(--viewmaster-border-color);
+    background-clip: padding-box;
+}
+@supports not (gap: 1rem) {
+    /* old safari */
+    .viewmaster > * + * {
+        margin-left: var(--viewmaster-split-flap-gap);
+    }
+}
+.viewmaster::before {
+    /* tried to create a fancy shiny bottom border using border-image, but
+       border images **replace** regular borders and ignore the
+       border-radius. */
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--viewmaster-border-radius);
+    right: var(--viewmaster-border-radius);
+    height: var(--viewmaster-border-width);
+    background-image: linear-gradient(to right,
+                                      transparent,
+                                      var(--viewmaster-border-highlight-color),
+                                      transparent);
+}

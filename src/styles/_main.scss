@@ -1,0 +1,308 @@
+// @import url('normalize.css');
+// @import url('viewmaster.css');
+// @import url('split-flap.css');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --font-familiy:                         'Arial Black', sans-serif;
+
+    --viewmaster-border-radius:             calc(var(--split-flap-border-radius) + var(--viewmaster-padding));
+    --viewmaster-padding:                   0.5vw;
+    --viewmaster-border-width:              0.5vw;
+    --viewmaster-split-flap-gap:            1vw;
+    --viewmaster-gap:                       4vw;
+    --viewmaster-border-color:              rgba(255, 255, 255, 0.1);
+    --viewmaster-border-highlight-color:    rgba(255, 255, 255, 0.4);
+    --split-flap-border-radius:             1vw;
+    --split-flap-dimensionless-line-height: 0.8;
+    --split-flap-transition-time:           0.2s;
+    --split-flap-transition-time-speedy:    0.1s;
+
+    /* https://www.cssportal.com/css-cubic-bezier-generator/ */
+    --split-flap-transition-function:       cubic-bezier(0.35, 0, 0.75, 0.5);
+
+    --split-flap-border-top:                1px solid rgba(255, 255, 255, 0.25);
+    --split-flap-border-bottom:             1px solid black;
+
+    --split-flap-color:                     rgb(225, 225, 225);
+    --split-flap-background-color:          rgb(42, 42, 42);
+    --split-flap-darken-top:                0.25;
+    --frame-background-color:               rgb(51, 51, 51);
+    --frame-background-image:               url("images/brushed-metal-50-100.jpg");
+    --frame-background-blend-mode:          multiply;
+
+    --split-flap-shadow-distance: 0.5vw;
+    --split-flap-shadow-1-opacity: 0.3;
+    --split-flap-shadow-2-opacity: 0.5;
+    --split-flap-shadow-3-opacity: 0.7;
+    --split-flap-shadow-4-opacity: 0.9;
+
+    --viewmaster-perspective:               100vw; /* small values may trigger brief flashes of scrollbars during transitions */
+    --split-flap-gap:                       0.04em;
+
+    --highlight: rgba(255, 255, 255, 0.125);
+    --shadow: rgba(0, 0, 0, 0.25);
+    --gradient: linear-gradient(to bottom, var(--shadow), transparent, transparent, var(--highlight));
+}
+
+/* clock page */
+body {
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    background-color: var(--frame-background-color);
+    background-image: var(--frame-background-image);
+    background-blend-mode: var(--frame-background-blend-mode);
+    background-size: cover;
+    background-position: center;
+}
+.viewmaster__stack {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: var(--viewmaster-gap);
+}
+@supports not (gap: 1rem) {
+    /* old safari */
+    .viewmaster__stack > * + * {
+        margin-top: var(--viewmaster-gap);
+    }
+}
+.viewmaster__wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-left: auto;
+    margin-right: auto;
+}
+.viewmaster {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* THIS clock page layout */
+.viewmaster {
+    font-family: var(--font-family);
+    /* font-family: 'Arial', 'Helvetica', sans-serif; */
+}
+#date {
+    font-size: 7vw;
+}
+#time {
+    font-size: 21vw;
+    --split-flap-gap: 0.02em;
+    --split-flap-shadow-distance: 1vw;
+}
+#date .split-flap {
+    width: 7.5ch;
+    text-transform: uppercase;
+}
+#time .split-flap {
+    width: 2.5ch;
+}
+
+.clock-page--arial .viewmaster {
+    font-family: 'Arial', sans-serif;
+}
+
+.clock-page--arial-black {
+    --split-flap-dimensionless-line-height: 0.85;
+}
+.clock-page--arial-black .viewmaster {
+    font-family: 'Arial Black', sans-serif;
+    font-weight: 900;
+}
+.clock-page--arial-black .viewmaster--date {
+    font-size: 6vw;
+}
+.clock-page--arial-black .viewmaster--time {
+    font-size: 18vw;
+}
+
+.clock-page--italic .viewmaster {
+    font-style: italic;
+}
+.clock-page--bold .viewmaster--date {
+    font-weight: bold;
+}
+.clock-page--bold-bold .viewmaster--time {
+    font-weight: bold;
+}
+
+.clock-page--times .viewmaster {
+    font-family: 'Times New Roman', 'Times Roman', 'Times', sans-serif;
+}
+.clock-page--times #date {
+    font-size: 7.5vw;
+}
+.clock-page--times #time {
+    font-size: 22.5vw;
+}
+.clock-page--futura .viewmaster {
+    font-family: 'Futura', sans-serif;
+}
+.clock-page--futura {
+    --split-flap-dimensionless-line-height: 0.90;
+}
+.clock-page--futura #date { font-size:  6.5vw; }
+.clock-page--futura #time { font-size: 19.5vw; }
+
+.clock-page--helvetica .viewmaster {
+    font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+}
+.clock-page--helvetica-condensed-bold .viewmaster {
+    font-family: 'HelveticaNeue-CondensedBold', sans-serif;
+}
+.clock-page--helvetica-condensed-bold #date {
+    font-size: 8.5vw;
+}
+.clock-page--helvetica-condensed-bold #time {
+    font-size: 25.5vw;
+}
+
+.clock-page--time-100 .viewmaster--time { font-weight: 100; }
+.clock-page--time-200 .viewmaster--time { font-weight: 200; }
+.clock-page--time-300 .viewmaster--time { font-weight: 300; }
+.clock-page--time-400 .viewmaster--time { font-weight: 400; }
+.clock-page--time-500 .viewmaster--time { font-weight: 500; }
+.clock-page--time-600 .viewmaster--time { font-weight: 600; }
+.clock-page--time-700 .viewmaster--time { font-weight: 700; }
+.clock-page--time-800 .viewmaster--time { font-weight: 800; }
+.clock-page--time-900 .viewmaster--time { font-weight: 900; }
+.clock-page--date-100 .viewmaster--date { font-weight: 100; }
+.clock-page--date-200 .viewmaster--date { font-weight: 200; }
+.clock-page--date-300 .viewmaster--date { font-weight: 300; }
+.clock-page--date-400 .viewmaster--date { font-weight: 400; }
+.clock-page--date-500 .viewmaster--date { font-weight: 500; }
+.clock-page--date-600 .viewmaster--date { font-weight: 600; }
+.clock-page--date-700 .viewmaster--date { font-weight: 700; }
+.clock-page--date-800 .viewmaster--date { font-weight: 800; }
+.clock-page--date-900 .viewmaster--date { font-weight: 900; }
+
+.clock-page--helvetica-condensed-bold .nn[data-number] {
+    display: block;             /* required for ::first-letter to work */
+}
+.clock-page--helvetica-condensed-bold .nn[data-number]::first-letter {
+    letter-spacing: 0em;        /* first digit */
+}
+.clock-page--helvetica-condensed-bold .nn[data-number="10"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="11"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="12"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="13"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="14"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="15"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="16"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="17"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="18"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="19"]::first-letter {
+    letter-spacing: -0.08em;    /* first digit */
+}
+.clock-page--helvetica-condensed-bold .nn[data-number="01"],
+.clock-page--helvetica-condensed-bold .nn[data-number="11"],
+.clock-page--helvetica-condensed-bold .nn[data-number="21"],
+.clock-page--helvetica-condensed-bold .nn[data-number="31"],
+.clock-page--helvetica-condensed-bold .nn[data-number="41"],
+.clock-page--helvetica-condensed-bold .nn[data-number="51"] {
+    letter-spacing: -0.08em;    /* only affects second digit */
+}
+.button {
+    --background-color: #333;
+    background-color: var(--background-color);
+    color: white;
+    appearance: none;
+    padding: 0.25em 0.75em;
+    text-decoration: none;
+    display: inline-block;
+    border: 2px outset var(--background-color);
+    background-image: var(--gradient);
+}
+.button--primary {
+    --background-color: #024;
+}
+.button--dismiss {
+    --background-color: #700;
+}
+.pwa {
+    display: none;
+    position: absolute;
+    bottom: 4rem;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 200%;
+    z-index: 15;
+}
+.pwa .button {
+    margin: 0.5rem 1rem 0;
+}
+.prefs-toggle-area {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    font-size: 200%;
+    padding: 0.5em;
+    color: white;
+    text-shadow: 1px 1px 0 black, 2px 2px 0 black;
+    opacity: 0.1875;
+    z-index: 10;
+}
+.prefs-toggle {
+    color: inherit;
+    text-decoration: none;
+    line-height: 0.7;
+}
+.prefs-toggle::before {
+    content: '\2699';           /* U+2699 GEAR */
+}
+.modal {
+    display: none;
+}
+.modal__backing-layer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modal__screen {
+    width: 40rem;
+    max-width: 80%;
+    position: fixed;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--frame-background-color);
+    border: 1px outset var(--frame-background-color);
+    background-image: var(--gradient);
+    padding: 2rem;
+    z-index: 20;
+}
+.modal .modal-close-area {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 200%;
+    padding: 0.5em;
+    color: white;
+    text-shadow: 1px 1px 0 black, 2px 2px 0 black;
+    opacity: 0.1875;
+    z-index: 10;
+}
+.modal-close-button {
+    color: inherit;
+    text-decoration: none;
+}
+.modal-close-button::before {
+    line-height: 0.5;
+    font-size: calc(100% * 7/5);
+    content: '\00d7';           /* U+00D7 MULTIPLICATION SIGN */
+}
+h1, h2, h3, h4, h5, h6, p, ul, ol, dl, pre {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
