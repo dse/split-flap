@@ -1,5 +1,3 @@
-// DEMO
-
 import {
     MonthSplitFlap,
     DayOfMonthSplitFlap,
@@ -8,6 +6,7 @@ import {
     MinuteSplitFlap,
     SecondSplitFlap,
 } from './split-flap.js';
+import Reflow from './reflow.js';
 
 export default class Clock {
     constructor() {
@@ -27,12 +26,13 @@ export default class Clock {
     }
     update() {
         let date = new Date();
-        this.ddd.goTo(date.getDay());
-        this.dd.goTo(date.getDate());
-        this.mmm.goTo(date.getMonth());
-        this.hh.goTo(date.getHours());
-        this.mm.goTo(date.getMinutes());
-        this.ss.goTo(date.getSeconds());
+        const firstReflow = new Reflow(6);
+        this.ddd.goTo(date.getDay(), firstReflow);
+        this.dd.goTo(date.getDate(), firstReflow);
+        this.mmm.goTo(date.getMonth(), firstReflow);
+        this.hh.goTo(date.getHours(), firstReflow);
+        this.mm.goTo(date.getMinutes(), firstReflow);
+        this.ss.goTo(date.getSeconds(), firstReflow);
     }
     start() {
         if (this.timeout) {

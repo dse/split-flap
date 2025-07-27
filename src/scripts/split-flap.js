@@ -1,3 +1,5 @@
+import Reflow from './reflow.js';
+
 export class SplitFlap {
     constructor(element, start, end, strings) {
         if (!element) { throw new Error(`element not found`); }
@@ -26,9 +28,10 @@ export class SplitFlap {
         this.targetState = start;
         this.update();
     }
-    transition() {
+    async transition(firstReflow) {
         if (this.state === this.targetState) {
             this.transitioning = false;
+            firstReflow.tick(false);
             return;
         }
         let nextState = (this.state - this.start + 1) % this.strings.length + this.start;
@@ -47,7 +50,14 @@ export class SplitFlap {
             this.transitionTopElement.classList.add('xx--speedy');
             this.transitionBottomElement.classList.add('xx--speedy');
         }
-        this.reflow();
+
+        firstReflow.tick(true);
+        await firstReflow.promise;
+        firstReflow.reflow(this.element);
+        const secondReflow = (firstReflow.secondReflow = 
+                              firstReflow.secondReflow ?? 
+                              new Reflow(firstReflow.trueCount));
+
         this.transitionTopElement.classList.add('xx--transition');
         this.transitionBottomElement.classList.add('xx--transition');
         let duration = Math.max(this.getTransitionDuration(this.transitionTopElement),
@@ -56,10 +66,15 @@ export class SplitFlap {
         let handler2Executed = 0;
         let timeout1;
         let timeout2;
-        let finish = function () {
-            this.reflow();
+        let finish = async function () {
+            secondReflow.tick();
+            await secondReflow.promise;
+            secondReflow.reflow(this.element);
+            const thirdReflow = (secondReflow.thirdReflow =
+                                 secondReflow.thirdReflow ??
+                                 new Reflow(firstReflow.trueCount));
             this.state = nextState;
-            this.transition();
+            this.transition(thirdReflow);
         }.bind(this);
         let handler1 = function (event) {
             if (timeout1) {
@@ -103,19 +118,21 @@ export class SplitFlap {
         timeout1 = setTimeout(handler1, ms);
         timeout2 = setTimeout(handler2, ms);
     }
-    transitionTo(targetState) {
+    transitionTo(targetState, firstReflow) {
         this.targetState = targetState;
         if (this.transitioning) {
+            firstReflow.tick(false);
             return;
         }
         if (this.state === this.targetState) {
+            firstReflow.tick(false);
             return;
         }
         this.transitioning = true;
-        this.transition();
+        this.transition(firstReflow);
     }
-    goTo(targetState) {
-        this.transitionTo(targetState);
+    goTo(targetState, firstReflow) {
+        this.transitionTo(targetState, firstReflow);
     }
     reflow() {
         /*jshint -W030 */
