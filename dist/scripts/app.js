@@ -7,6 +7,31 @@
     if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
     return e;
   }
+  function asyncGeneratorStep(n, t, e, r, o, a, c) {
+    try {
+      var i = n[a](c),
+        u = i.value;
+    } catch (n) {
+      return void e(n);
+    }
+    i.done ? t(u) : Promise.resolve(u).then(r, o);
+  }
+  function _asyncToGenerator(n) {
+    return function () {
+      var t = this,
+        e = arguments;
+      return new Promise(function (r, o) {
+        var a = n.apply(t, e);
+        function _next(n) {
+          asyncGeneratorStep(a, r, o, _next, _throw, "next", n);
+        }
+        function _throw(n) {
+          asyncGeneratorStep(a, r, o, _next, _throw, "throw", n);
+        }
+        _next(void 0);
+      });
+    };
+  }
   function _callSuper(t, o, e) {
     return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
   }
@@ -63,6 +88,114 @@
     if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined");
     return _assertThisInitialized(t);
   }
+  function _regenerator() {
+    /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */
+    var e,
+      t,
+      r = "function" == typeof Symbol ? Symbol : {},
+      n = r.iterator || "@@iterator",
+      o = r.toStringTag || "@@toStringTag";
+    function i(r, n, o, i) {
+      var c = n && n.prototype instanceof Generator ? n : Generator,
+        u = Object.create(c.prototype);
+      return _regeneratorDefine(u, "_invoke", function (r, n, o) {
+        var i,
+          c,
+          u,
+          f = 0,
+          p = o || [],
+          y = false,
+          G = {
+            p: 0,
+            n: 0,
+            v: e,
+            a: d,
+            f: d.bind(e, 4),
+            d: function (t, r) {
+              return i = t, c = 0, u = e, G.n = r, a;
+            }
+          };
+        function d(r, n) {
+          for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) {
+            var o,
+              i = p[t],
+              d = G.p,
+              l = i[2];
+            r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0));
+          }
+          if (o || r > 1) return a;
+          throw y = true, n;
+        }
+        return function (o, p, l) {
+          if (f > 1) throw TypeError("Generator is already running");
+          for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) {
+            i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u);
+            try {
+              if (f = 2, i) {
+                if (c || (o = "next"), t = i[o]) {
+                  if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object");
+                  if (!t.done) return t;
+                  u = t.value, c < 2 && (c = 0);
+                } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1);
+                i = e;
+              } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break;
+            } catch (t) {
+              i = e, c = 1, u = t;
+            } finally {
+              f = 1;
+            }
+          }
+          return {
+            value: t,
+            done: y
+          };
+        };
+      }(r, o, i), true), u;
+    }
+    var a = {};
+    function Generator() {}
+    function GeneratorFunction() {}
+    function GeneratorFunctionPrototype() {}
+    t = Object.getPrototypeOf;
+    var c = [][n] ? t(t([][n]())) : (_regeneratorDefine(t = {}, n, function () {
+        return this;
+      }), t),
+      u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c);
+    function f(e) {
+      return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e;
+    }
+    return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine(u), _regeneratorDefine(u, o, "Generator"), _regeneratorDefine(u, n, function () {
+      return this;
+    }), _regeneratorDefine(u, "toString", function () {
+      return "[object Generator]";
+    }), (_regenerator = function () {
+      return {
+        w: i,
+        m: f
+      };
+    })();
+  }
+  function _regeneratorDefine(e, r, n, t) {
+    var i = Object.defineProperty;
+    try {
+      i({}, "", {});
+    } catch (e) {
+      i = 0;
+    }
+    _regeneratorDefine = function (e, r, n, t) {
+      function o(r, n) {
+        _regeneratorDefine(e, r, function (e) {
+          return this._invoke(r, n, e);
+        });
+      }
+      r ? i ? i(e, r, {
+        value: n,
+        enumerable: !t,
+        configurable: !t,
+        writable: !t
+      }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2));
+    }, _regeneratorDefine(e, r, n, t);
+  }
   function _setPrototypeOf(t, e) {
     return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
       return t.__proto__ = e, t;
@@ -92,6 +225,66 @@
     var i = _toPrimitive(t, "string");
     return "symbol" == typeof i ? i : i + "";
   }
+
+  /*global console */
+
+  var idCounter = 0;
+  var reflowCount = 0;
+  var Reflow = /*#__PURE__*/function () {
+    function Reflow(ticks) {
+      var _this = this;
+      _classCallCheck(this, Reflow);
+      this.id = idCounter;
+      idCounter += 1;
+      // console.log(`Reflow #${this.id}: initializing with ${ticks} ticks`);
+      this.ticks = ticks;
+      this.tickCount = 0;
+      this.promise = new Promise(function (resolve, reject) {
+        // console.log(`Reflow #${this.id}: promise created`);
+        _this.resolve = resolve;
+      });
+      this.reflowCompleted = false;
+      this.trueCount = 0;
+      this.falseCount = 0;
+    }
+    return _createClass(Reflow, [{
+      key: "tick",
+      value: function tick(bool) {
+        var _this2 = this;
+        // console.log(`Reflow #${this.id}: ticking`);
+        new Promise(function (resolve, reject) {
+          return resolve();
+        }).then(function () {
+          if (_this2.tickCount >= _this2.ticks) {
+            return;
+          }
+          _this2.tickCount += 1;
+          // console.log(`Reflow #${this.id}: new tickCount is ${this.tickCount} of ${this.ticks}`);
+          if (bool) {
+            _this2.trueCount += 1;
+          } else {
+            _this2.falseCount += 1;
+          }
+          if (_this2.tickCount >= _this2.ticks) {
+            _this2.resolve();
+          }
+        });
+      }
+    }, {
+      key: "reflow",
+      value: function reflow(elt) {
+        if (this.reflowCompleted) {
+          // console.log(`Reflow #${this.id}: reflow already triggered`);
+          return false;
+        }
+        reflowCount += 1;
+        console.log("Reflow #".concat(this.id, ": triggering reflow #").concat(reflowCount));
+        this.reflowCompleted = true;
+        void elt.offsetHeight; // triggers the reflow
+        return true;
+      }
+    }]);
+  }();
 
   var SplitFlap = /*#__PURE__*/function () {
     function SplitFlap(element, start, end, strings) {
@@ -126,105 +319,137 @@
     }
     return _createClass(SplitFlap, [{
       key: "transition",
-      value: function transition() {
-        if (this.state === this.targetState) {
-          this.transitioning = false;
-          return;
-        }
-        var nextState = (this.state - this.start + 1) % this.strings.length + this.start;
-        var currentState = this.state;
-        var currentString = this.strings[this.state - this.start];
-        var nextString = this.strings[nextState - this.start];
-        this.transitionTopElement.innerHTML = currentString;
-        this.transitionTopElement.setAttribute('data-state', currentState);
-        this.topElement.innerHTML = nextString;
-        this.topElement.setAttribute('data-state', nextState);
-        this.transitionBottomElement.innerHTML = nextString;
-        this.transitionBottomElement.setAttribute('data-state', nextState);
-        this.transitionTopElement.classList.add('xx--start');
-        this.transitionBottomElement.classList.add('xx--start');
-        if (this.targetState !== nextState) {
-          this.transitionTopElement.classList.add('xx--speedy');
-          this.transitionBottomElement.classList.add('xx--speedy');
-        }
-        this.reflow();
-        this.transitionTopElement.classList.add('xx--transition');
-        this.transitionBottomElement.classList.add('xx--transition');
-        var duration = Math.max(this.getTransitionDuration(this.transitionTopElement), this.getTransitionDuration(this.transitionBottomElement));
-        var handler1Executed = 0;
-        var handler2Executed = 0;
-        var timeout1;
-        var timeout2;
-        var finish = function () {
-          this.reflow();
-          this.state = nextState;
-          this.transition();
-        }.bind(this);
-        var handler1 = function (event) {
-          if (timeout1) {
-            clearTimeout(timeout1);
-            timeout1 = null;
-          }
-          if (handler1Executed++) {
-            return;
-          }
-          this.transitionTopElement.removeEventListener('transitionend', handler1);
-          this.transitionTopElement.removeEventListener('transitioncancel', handler1);
-          this.transitionTopElement.classList.remove('xx--start', 'xx--transition', 'xx--speedy');
-          if (handler1Executed && handler2Executed) {
-            finish();
-          }
-        }.bind(this);
-        var handler2 = function (event) {
-          if (timeout2) {
-            clearTimeout(timeout2);
-            timeout2 = null;
-          }
-          if (handler2Executed++) {
-            return;
-          }
-          this.transitionBottomElement.removeEventListener('transitionend', handler2);
-          this.transitionBottomElement.removeEventListener('transitioncancel', handler2);
-          this.bottomElement.innerHTML = nextString;
-          this.bottomElement.setAttribute('data-state', nextState);
-          this.transitionBottomElement.classList.remove('xx--start', 'xx--transition', 'xx--speedy');
-          if (handler1Executed && handler2Executed) {
-            finish();
-          }
-        }.bind(this);
-        this.transitionTopElement.addEventListener('transitionend', handler1);
-        this.transitionTopElement.addEventListener('transitioncancel', handler1);
-        this.transitionBottomElement.addEventListener('transitionend', handler2);
-        this.transitionBottomElement.addEventListener('transitioncancel', handler2);
+      value: function () {
+        var _transition = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(firstReflow) {
+          var _firstReflow$secondRe;
+          var nextState, currentState, currentString, nextString, secondReflow, duration, handler1Executed, handler2Executed, timeout1, timeout2, finish, handler1, handler2, ms;
+          return _regenerator().w(function (_context2) {
+            while (1) switch (_context2.n) {
+              case 0:
+                if (!(this.state === this.targetState)) {
+                  _context2.n = 1;
+                  break;
+                }
+                this.transitioning = false;
+                firstReflow.tick(false);
+                return _context2.a(2);
+              case 1:
+                nextState = (this.state - this.start + 1) % this.strings.length + this.start;
+                currentState = this.state;
+                currentString = this.strings[this.state - this.start];
+                nextString = this.strings[nextState - this.start];
+                this.transitionTopElement.innerHTML = currentString;
+                this.transitionTopElement.setAttribute('data-state', currentState);
+                this.topElement.innerHTML = nextString;
+                this.topElement.setAttribute('data-state', nextState);
+                this.transitionBottomElement.innerHTML = nextString;
+                this.transitionBottomElement.setAttribute('data-state', nextState);
+                this.transitionTopElement.classList.add('xx--start');
+                this.transitionBottomElement.classList.add('xx--start');
+                if (this.targetState !== nextState) {
+                  this.transitionTopElement.classList.add('xx--speedy');
+                  this.transitionBottomElement.classList.add('xx--speedy');
+                }
+                firstReflow.tick(true);
+                _context2.n = 2;
+                return firstReflow.promise;
+              case 2:
+                firstReflow.reflow(this.element);
+                secondReflow = firstReflow.secondReflow = (_firstReflow$secondRe = firstReflow.secondReflow) !== null && _firstReflow$secondRe !== void 0 ? _firstReflow$secondRe : new Reflow(firstReflow.trueCount);
+                this.transitionTopElement.classList.add('xx--transition');
+                this.transitionBottomElement.classList.add('xx--transition');
+                duration = Math.max(this.getTransitionDuration(this.transitionTopElement), this.getTransitionDuration(this.transitionBottomElement));
+                handler1Executed = 0;
+                handler2Executed = 0;
+                finish = /*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+                  var _secondReflow$thirdRe;
+                  var thirdReflow;
+                  return _regenerator().w(function (_context) {
+                    while (1) switch (_context.n) {
+                      case 0:
+                        secondReflow.tick();
+                        _context.n = 1;
+                        return secondReflow.promise;
+                      case 1:
+                        secondReflow.reflow(this.element);
+                        thirdReflow = secondReflow.thirdReflow = (_secondReflow$thirdRe = secondReflow.thirdReflow) !== null && _secondReflow$thirdRe !== void 0 ? _secondReflow$thirdRe : new Reflow(firstReflow.trueCount);
+                        this.state = nextState;
+                        this.transition(thirdReflow);
+                      case 2:
+                        return _context.a(2);
+                    }
+                  }, _callee, this);
+                })).bind(this);
+                handler1 = function (event) {
+                  if (timeout1) {
+                    clearTimeout(timeout1);
+                    timeout1 = null;
+                  }
+                  if (handler1Executed++) {
+                    return;
+                  }
+                  this.transitionTopElement.removeEventListener('transitionend', handler1);
+                  this.transitionTopElement.removeEventListener('transitioncancel', handler1);
+                  this.transitionTopElement.classList.remove('xx--start', 'xx--transition', 'xx--speedy');
+                  if (handler1Executed && handler2Executed) {
+                    finish();
+                  }
+                }.bind(this);
+                handler2 = function (event) {
+                  if (timeout2) {
+                    clearTimeout(timeout2);
+                    timeout2 = null;
+                  }
+                  if (handler2Executed++) {
+                    return;
+                  }
+                  this.transitionBottomElement.removeEventListener('transitionend', handler2);
+                  this.transitionBottomElement.removeEventListener('transitioncancel', handler2);
+                  this.bottomElement.innerHTML = nextString;
+                  this.bottomElement.setAttribute('data-state', nextState);
+                  this.transitionBottomElement.classList.remove('xx--start', 'xx--transition', 'xx--speedy');
+                  if (handler1Executed && handler2Executed) {
+                    finish();
+                  }
+                }.bind(this);
+                this.transitionTopElement.addEventListener('transitionend', handler1);
+                this.transitionTopElement.addEventListener('transitioncancel', handler1);
+                this.transitionBottomElement.addEventListener('transitionend', handler2);
+                this.transitionBottomElement.addEventListener('transitioncancel', handler2);
 
-        // in case transition events fail...
-        var ms = duration + 100;
-        timeout1 = setTimeout(handler1, ms);
-        timeout2 = setTimeout(handler2, ms);
-      }
+                // in case transition events fail...
+                ms = duration + 100;
+                timeout1 = setTimeout(handler1, ms);
+                timeout2 = setTimeout(handler2, ms);
+              case 3:
+                return _context2.a(2);
+            }
+          }, _callee2, this);
+        }));
+        function transition(_x) {
+          return _transition.apply(this, arguments);
+        }
+        return transition;
+      }()
     }, {
       key: "transitionTo",
-      value: function transitionTo(targetState, delayed) {
+      value: function transitionTo(targetState, firstReflow) {
         this.targetState = targetState;
         if (this.transitioning) {
-          return;
-        }
-        if (this.delay && !delayed) {
-          setTimeout(function () {
-            this.transitionTo(targetState, true);
-          }.bind(this), this.delay);
+          firstReflow.tick(false);
           return;
         }
         if (this.state === this.targetState) {
+          firstReflow.tick(false);
           return;
         }
         this.transitioning = true;
-        this.transition();
+        this.transition(firstReflow);
       }
     }, {
       key: "goTo",
-      value: function goTo(targetState, delayed) {
-        this.transitionTo(targetState, delayed);
+      value: function goTo(targetState, firstReflow) {
+        this.transitionTo(targetState, firstReflow);
       }
     }, {
       key: "reflow",
@@ -408,12 +633,6 @@
       this.hh = new HourSplitFlap(document.getElementById('hours'));
       this.mm = new MinuteSplitFlap(document.getElementById('minutes'));
       this.ss = new SecondSplitFlap(document.getElementById('seconds'));
-      // this.mmm.delay = 83;
-      // this.ddd.delay = 66;
-      // this.dd.delay = 50;
-      // this.hh.delay = 33;
-      // this.mm.delay = 16;
-      // this.mm.delay = 1;
     }
     return _createClass(Clock, [{
       key: "setTwentyFourHour",
@@ -429,12 +648,13 @@
       key: "update",
       value: function update() {
         var date = new Date();
-        this.ddd.goTo(date.getDay());
-        this.dd.goTo(date.getDate());
-        this.mmm.goTo(date.getMonth());
-        this.hh.goTo(date.getHours());
-        this.mm.goTo(date.getMinutes());
-        this.ss.goTo(date.getSeconds());
+        var firstReflow = new Reflow(6);
+        this.ddd.goTo(date.getDay(), firstReflow);
+        this.dd.goTo(date.getDate(), firstReflow);
+        this.mmm.goTo(date.getMonth(), firstReflow);
+        this.hh.goTo(date.getHours(), firstReflow);
+        this.mm.goTo(date.getMinutes(), firstReflow);
+        this.ss.goTo(date.getSeconds(), firstReflow);
       }
     }, {
       key: "start",
