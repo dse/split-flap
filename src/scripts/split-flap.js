@@ -103,15 +103,9 @@ export class SplitFlap {
         timeout1 = setTimeout(handler1, ms);
         timeout2 = setTimeout(handler2, ms);
     }
-    transitionTo(targetState, delayed) {
+    transitionTo(targetState) {
         this.targetState = targetState;
         if (this.transitioning) {
-            return;
-        }
-        if (this.delay && !delayed) {
-            setTimeout(function () {
-                this.transitionTo(targetState, true);
-            }.bind(this), this.delay);
             return;
         }
         if (this.state === this.targetState) {
@@ -120,8 +114,8 @@ export class SplitFlap {
         this.transitioning = true;
         this.transition();
     }
-    goTo(targetState, delayed) {
-        this.transitionTo(targetState, delayed);
+    goTo(targetState) {
+        this.transitionTo(targetState);
     }
     reflow() {
         /*jshint -W030 */
