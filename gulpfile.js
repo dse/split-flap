@@ -3,12 +3,12 @@
 import autoprefixer  from 'autoprefixer';
 import browsersync   from 'browser-sync';
 import babel         from '@rollup/plugin-babel';
+import * as dartSass from 'sass';
 import gulp          from 'gulp';
 import gulpSass      from 'gulp-sass';
 import postcss       from 'gulp-postcss';
 import resolve       from '@rollup/plugin-node-resolve';
 import * as rollup   from 'rollup';
-import * as dartSass from 'sass';
 
 const sass = gulpSass(dartSass);
 let server;
