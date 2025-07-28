@@ -77,8 +77,8 @@ const devTask = gulp.series(
     gulp.parallel(serverTask, watchTask),
 );
 
-export { rollupTask as "rollup" };
-export { sassTask   as "sass"   };
-export { htmlTask   as "html"   };
-export { buildTask  as "build"  };
-export { devTask    as "dev"    };
+export { rollupTask as rollup };
+export { sassTask   as sass   };
+export { htmlTask   as html   };
+export { buildTask  as build  };
+export { devTask    as dev    };
