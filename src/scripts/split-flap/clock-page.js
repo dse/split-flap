@@ -92,12 +92,12 @@ function setupFromQueryString() {
 }
 
 function setupPwa() {
-    Array.from(document.querySelectorAll('[data-pwa-install]')).forEach(function (btn) {
+    $$('[data-pwa-install]').forEach(function (btn) {
         btn.addEventListener('click', function (event) {
             event.preventDefault();
         });
     });
-    Array.from(document.querySelectorAll('[data-pwa-dismiss]')).forEach(function (btn) {
+    $$('[data-pwa-dismiss]').forEach(function (btn) {
         btn.addEventListener('click', function (event) {
             event.preventDefault();
             $('#pwa').style.display = 'none';
@@ -106,6 +106,26 @@ function setupPwa() {
 }
 
 let clock;
+
+function setupConsole() {
+    let modal = $('#consoleModal');
+    let toggle = $('#consoleToggle');
+    let closeModal = $('#closeConsoleModal');
+    let modalBackingLayer = $('#consoleModalBackingLayer');
+    toggle.addEventListener('click', function (event) {
+        event.preventDefault();
+        modal.style.display = (modal.style.display !== 'none' &&
+                               modal.style.display !== '') ? 'none' : 'block';
+    });
+    closeModal.addEventListener('click', function (event) {
+        event.preventDefault();
+        modal.style.display = 'none';
+    });
+    modalBackingLayer.addEventListener('click', function (event) {
+        event.preventDefault();
+        modal.style.display = 'none';
+    });
+}
 
 function setupPrefs() {
     let modal = $('#prefsModal');
@@ -151,9 +171,14 @@ window.addEventListener('load', function () {
     setupFromQueryString();
     clock = new Clock();
     setupPrefs();
+    setupConsole();
     clock.start();
 });
 
 function $() {
     return document.querySelector.apply(this, arguments);
+}
+
+function $$() {
+    return Array.from(document.querySelectorAll.apply(this, arguments));
 }
