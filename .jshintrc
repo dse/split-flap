@@ -54,7 +54,7 @@
     "withstmt":         false,
 
     // ENVIRONMENTS
-    "browser":          true,
+    "browser":          false,
     "browserify":       false,
     "couch":            false,
     "devel":            false,
@@ -64,7 +64,7 @@
     "mocha":            false,
     "module":           true,
     "mootools":         false,
-    "node":             false,
+    "node":             true,
     "nonstandard":      false,
     "phantom":          false,
     "prototypejs":      false,
