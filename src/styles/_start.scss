@@ -242,7 +242,7 @@ body {
 .pwa .button {
     margin: 0.5rem 1rem 0;
 }
-.prefs-toggle-area {
+.toggles-area {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -253,13 +253,16 @@ body {
     opacity: 0.1875;
     z-index: 10;
 }
-.prefs-toggle {
+.console-toggle, .prefs-toggle {
     color: inherit;
     text-decoration: none;
     line-height: 0.7;
 }
 .prefs-toggle::before {
     content: '\2699';           /* U+2699 GEAR */
+}
+.console-toggle::before {
+    content: '</>';
 }
 .modal {
     display: none;

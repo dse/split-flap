@@ -15,7 +15,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><!-- default, black, and black-translucent -->
         <meta name="apple-mobile-web-app-title" content="Flip Clock">
-        <link rel="stylesheet" href="/split-flap/styles/app.css">
+        <link rel="stylesheet" href="/split-flap/styles/main.css">
     </head>
     <body>
         <div class="viewmaster__stack">
@@ -100,8 +100,9 @@
                 </div>
             </div>
         </div>
-        <div id="prefsArea" class="prefs-toggle-area">
-            <a data-toggle-prefs class="prefs-toggle" id="prefsToggle" href="#"></a> <!-- U+2699 GEAR -->
+        <div id="togglesArea" class="toggles-area">
+            <a data-toggle-prefs class="prefs-toggle" id="prefsToggle" href="javascript:void(0);"></a> <!-- U+2699 GEAR -->
+            <a data-toggle-console class="console-toggle" id="consoleToggle" href="javascript:void(0);"></a> <!-- U+2699 GEAR -->
         </div>
         <div id="prefsModal" class="modal modal--prefs">
             <div id="prefsModalBackingLayer" class="modal__backing-layer">
@@ -117,15 +118,15 @@
                     </label>
                 </form>
                 <div class="modal-close-area">
-                    <a id="closePrefsModal" class="modal-close-button" href="#"></a>
+                    <a id="closePrefsModal" class="modal-close-button" href="javascript:void(0);"></a>
                 </div>
             </div>
         </div>
         <div id="pwa" class="pwa">
-            <a data-pwa-install class="button button--primary" href="#">Install this web app</a>
-            <a data-pwa-dismiss class="button button--dismiss" href="#">Dismiss</a>
+            <a data-pwa-install class="button button--primary" href="javascript:void(0);">Install this web app</a>
+            <a data-pwa-dismiss class="button button--dismiss" href="javascript:void(0);">Dismiss</a>
         </div>
-        <script type="module" src="/split-flap/scripts/app.js?v={{cacheBuster}}"></script>
+        <script type="module" src="/split-flap/scripts/main.js?v={{cacheBuster}}"></script>
         <script src="/split-flap/scripts/special.js?v={{cacheBuster}}"></script>
     </body>
 </html>
