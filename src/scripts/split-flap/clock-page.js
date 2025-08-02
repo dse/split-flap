@@ -108,26 +108,26 @@ function setupPwa() {
 let clock;
 
 function setupPrefs() {
-    let prefsModal = document.getElementById('prefsModal');
-    let prefsToggle = document.getElementById('prefsToggle');
-    let closePrefsModal = document.getElementById('closePrefsModal');
-    let prefsModalBackingLayer = document.getElementById('prefsModalBackingLayer');
-    let prefsForm = document.getElementById('prefsForm');
+    let modal = document.getElementById('prefsModal');
+    let toggle = document.getElementById('prefsToggle');
+    let closeModal = document.getElementById('closePrefsModal');
+    let modalBackingLayer = document.getElementById('prefsModalBackingLayer');
+    let form = document.getElementById('prefsForm');
     let twentyFourHourCheckbox = document.getElementById('twentyFourHourCheckbox');
-    prefsToggle.addEventListener('click', function (event) {
+    toggle.addEventListener('click', function (event) {
         event.preventDefault();
-        prefsModal.style.display = (prefsModal.style.display !== 'none' &&
-                                    prefsModal.style.display !== '') ? 'none' : 'block';
+        modal.style.display = (modal.style.display !== 'none' &&
+                                    modal.style.display !== '') ? 'none' : 'block';
     });
-    closePrefsModal.addEventListener('click', function (event) {
+    closeModal.addEventListener('click', function (event) {
         event.preventDefault();
-        prefsModal.style.display = 'none';
+        modal.style.display = 'none';
     });
-    prefsModalBackingLayer.addEventListener('click', function (event) {
+    modalBackingLayer.addEventListener('click', function (event) {
         event.preventDefault();
-        prefsModal.style.display = 'none';
+        modal.style.display = 'none';
     });
-    prefsForm.addEventListener('submit', function (event) {
+    form.addEventListener('submit', function (event) {
         event.preventDefault();
     });
     let twentyFourHour = JSON.parse(localStorage.getItem('twentyFourHour'));
