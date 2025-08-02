@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
         <link rel="manifest" href="manifest.json">
         <title>Flip Clock</title>
-        <script src="/split-flap/scripts/special-start.js"></script>
+        <script src="/split-flap/scripts/special-start.js?v={{cacheBuster}}"></script>
         <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=requestAnimationFrame%2CString.prototype.padStart%2CURL%2Cfetch"></script> -->
         <meta http-equiv="Permissions-Policy" content="screen-wake-lock=(self https://*.webonastick.com https://webonastick.com http://localhost http://localhost:3000)">
         <meta name="format-detection" content="telephone=no">
@@ -125,7 +125,7 @@
             <a data-pwa-install class="button button--primary" href="#">Install this web app</a>
             <a data-pwa-dismiss class="button button--dismiss" href="#">Dismiss</a>
         </div>
-        <script type="module" src="/split-flap/scripts/app.js"></script>
-        <script src="/split-flap/scripts/special.js"></script>
+        <script type="module" src="/split-flap/scripts/app.js?v={{cacheBuster}}"></script>
+        <script src="/split-flap/scripts/special.js?v={{cacheBuster}}"></script>
     </body>
 </html>
