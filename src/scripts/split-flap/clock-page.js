@@ -29,20 +29,20 @@ function registerServiceWorker() {
         event.preventDefault();
         window.deferredPrompt = event;
         if (document.readyState === 'complete') {
-            document.getElementById('pwa').style.display = 'block';
+            $('#pwa').style.display = 'block';
         } else {
             window.addEventListener('load', function () {
-                document.getElementById('pwa').style.display = 'block';
+                $('#pwa').style.display = 'block';
             });
         }
     });
     window.addEventListener('appinstalled', function (event) {
         window.deferredPrompt = null;
         if (document.readyState === 'complete') {
-            document.getElementById('pwa').style.display = 'none';
+            $('#pwa').style.display = 'none';
         } else {
             window.addEventListener('load', function () {
-                document.getElementById('pwa').style.display = 'none';
+                $('#pwa').style.display = 'none';
             });
         }
     });
@@ -85,10 +85,10 @@ function setupFromQueryString() {
     if (fg    != null && /^[0-9A-Za-z]{3}(?:[0-9A-Za-z]{3})?$/.test(fg))    { fg    = '#' + fg;    }
     if (bg    != null && /^[0-9A-Za-z]{3}(?:[0-9A-Za-z]{3})?$/.test(bg))    { bg    = '#' + bg;    }
     if (frame != null && /^[0-9A-Za-z]{3}(?:[0-9A-Za-z]{3})?$/.test(frame)) { frame = '#' + frame; }
-    if (fg    != null) { document.querySelector(':root').style.setProperty('--split-flap-color', fg); }
-    if (bg    != null) { document.querySelector(':root').style.setProperty('--split-flap-background-color', bg); }
-    if (frame != null) { document.querySelector(':root').style.setProperty('--frame-background-color', frame); }
-    if (sp.has('font')) { document.querySelector(':root').style.setProperty('--font-family', sp.get('font')); }
+    if (fg    != null) { $(':root').style.setProperty('--split-flap-color', fg); }
+    if (bg    != null) { $(':root').style.setProperty('--split-flap-background-color', bg); }
+    if (frame != null) { $(':root').style.setProperty('--frame-background-color', frame); }
+    if (sp.has('font')) { $(':root').style.setProperty('--font-family', sp.get('font')); }
 }
 
 function setupPwa() {
@@ -100,7 +100,7 @@ function setupPwa() {
     Array.from(document.querySelectorAll('[data-pwa-dismiss]')).forEach(function (btn) {
         btn.addEventListener('click', function (event) {
             event.preventDefault();
-            document.getElementById('pwa').style.display = 'none';
+            $('#pwa').style.display = 'none';
         });
     });
 }
@@ -108,12 +108,12 @@ function setupPwa() {
 let clock;
 
 function setupPrefs() {
-    let modal = document.getElementById('prefsModal');
-    let toggle = document.getElementById('prefsToggle');
-    let closeModal = document.getElementById('closePrefsModal');
-    let modalBackingLayer = document.getElementById('prefsModalBackingLayer');
-    let form = document.getElementById('prefsForm');
-    let twentyFourHourCheckbox = document.getElementById('twentyFourHourCheckbox');
+    let modal = $('#prefsModal');
+    let toggle = $('#prefsToggle');
+    let closeModal = $('#closePrefsModal');
+    let modalBackingLayer = $('#prefsModalBackingLayer');
+    let form = $('#prefsForm');
+    let twentyFourHourCheckbox = $('#twentyFourHourCheckbox');
     toggle.addEventListener('click', function (event) {
         event.preventDefault();
         modal.style.display = (modal.style.display !== 'none' &&
@@ -138,7 +138,7 @@ function setupPrefs() {
         clock.hh.setTwentyFourHour(twentyFourHour);
     }
     twentyFourHourCheckbox.addEventListener('change', function (event) {
-        twentyFourHour = document.getElementById('twentyFourHourCheckbox').checked;
+        twentyFourHour = $('#twentyFourHourCheckbox').checked;
         clock.setTwentyFourHour(twentyFourHour);
         localStorage.setItem('twentyFourHour', JSON.stringify(twentyFourHour));
     });
@@ -153,3 +153,7 @@ window.addEventListener('load', function () {
     setupPrefs();
     clock.start();
 });
+
+function $() {
+    return document.querySelector.apply(this, arguments);
+}
