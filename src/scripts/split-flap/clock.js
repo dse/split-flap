@@ -24,7 +24,7 @@ export default class Clock {
         this.hh.setTwelveHour(flag);
     }
     update() {
-        var date = new Date();
+        let date = new Date();
         this.ddd.transitionTo(date.getDay());
         this.dd.transitionTo(date.getDate());
         this.mmm.transitionTo(date.getMonth());
@@ -37,7 +37,7 @@ export default class Clock {
             return;
         }
         this.update();
-        var ms = 1000 - Date.now() % 1000;
+        let ms = 1000 - Date.now() % 1000;
         this.timeout = setTimeout(function () {
             this.timeout = null;
             this.start();
