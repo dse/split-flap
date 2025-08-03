@@ -1,9 +1,5 @@
 /*jshint devel: true */
 
-const ROLL_CALL = true;
-
-import RollCall from './roll-call.js';
-
 export class SplitFlap {
     constructor(element, start, end, strings) {
         if (!element) { throw new Error(`element not found`); }
@@ -31,12 +27,9 @@ export class SplitFlap {
         this.targetState = start;
         this.update();
     }
-    async transition(firstRollCall) {
+    async transition() {
         if (this.state === this.targetState) {
             this.transitioning = false;
-            if (ROLL_CALL) {
-                firstRollCall.checkIn({ "go": false });
-            }
             return;
         }
         let nextState = (this.state - this.start + 1) % this.strings.length + this.start;
@@ -52,44 +45,11 @@ export class SplitFlap {
         this.transitionTopElement.classList.add('xx--start');
         this.transitionBottomElement.classList.add('xx--start');
         const speedy = this.targetState !== nextState;
-        let speedyCount;
-        let slowCount;
-        let whichRollCall;
-        if (ROLL_CALL) {
-            firstRollCall.checkIn({ "go": true, "speedy": speedy });
-            await firstRollCall.allCounted();
-            speedyCount = firstRollCall.countOf(x => x.go && x.speedy);
-            slowCount   = firstRollCall.countOf(x => x.go && !x.speedy);
-            // console.log(speedyCount, slowCount);
-            if (speedyCount) {
-                if (!firstRollCall.speedyRollCall) {
-                    // console.log(`created speedy rollcall`);
-                    firstRollCall.speedyRollCall = new RollCall(speedyCount);
-                }
-            }
-            if (slowCount) {
-                if (!firstRollCall.slowRollCall) {
-                    // console.log(`created slow rollcall`);
-                    firstRollCall.slowRollCall = new RollCall(slowCount);
-                }
-            }
-            whichRollCall = speedy ? firstRollCall.speedyRollCall : firstRollCall.slowRollCall;
-        }
         if (speedy) {
             this.transitionTopElement.classList.add('xx--speedy');
             this.transitionBottomElement.classList.add('xx--speedy');
         }
-        let secondRollCall;
-        if (ROLL_CALL) {
-            whichRollCall.once(() => this.reflow());
-            if (!whichRollCall.secondRollCall) {
-                // console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #2`);
-                whichRollCall.secondRollCall = new RollCall(speedy ? speedyCount : slowCount);
-            }
-            secondRollCall = whichRollCall.secondRollCall;
-        } else {
-            this.reflow();
-        }
+        this.reflow();
         this.transitionTopElement.classList.add('xx--transition');
         this.transitionBottomElement.classList.add('xx--transition');
         let duration = Math.max(this.getTransitionDuration(this.transitionTopElement),
@@ -98,22 +58,10 @@ export class SplitFlap {
         let handler2Executed = 0;
         let timeout1;
         let timeout2;
-        let thirdRollCall;
         let finish = async function () {
-            if (ROLL_CALL) {
-                secondRollCall.checkIn();
-                await secondRollCall.allCounted();
-                secondRollCall.once(() => this.reflow());
-                if (!secondRollCall.thirdRollCall) {
-                    // console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #3`);
-                    secondRollCall.thirdRollCall = new RollCall(speedy ? speedyCount : slowCount);
-                }
-                thirdRollCall = secondRollCall.thirdRollCall;
-            } else {
-                this.reflow();
-            }
+            this.reflow();
             this.state = nextState;
-            await this.transition(thirdRollCall);
+            await this.transition();
         }.bind(this);
         let handler1 = async function (event) {
             if (timeout1) {
@@ -157,22 +105,16 @@ export class SplitFlap {
         timeout1 = setTimeout(handler1, ms);
         timeout2 = setTimeout(handler2, ms);
     }
-    async transitionTo(targetState, firstRollCall) {
+    async transitionTo(targetState) {
         this.targetState = targetState;
         if (this.transitioning) {
-            if (ROLL_CALL) {
-                firstRollCall.checkIn({ "go": false });
-            }
             return;
         }
         if (this.state === this.targetState) {
-            if (ROLL_CALL) {
-                firstRollCall.checkIn({ "go": false });
-            }
             return;
         }
         this.transitioning = true;
-        await this.transition(firstRollCall);
+        await this.transition();
     }
     reflow() {
         /*jshint -W030 */
