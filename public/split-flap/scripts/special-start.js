@@ -3,8 +3,18 @@
 console.log('This is special-start.js.');
 
 if (isIpad() && isOldIos()) {
-    wrapConsoleLogFunctions();
+    window.addEventListener('error', function (event) {
+        window.alert(
+            "ERROR: " + event.message + "\n" +
+                event.filename + ":" + event.lineno + ":" + event.colno + "\n" +
+                JSON.stringify(event.error, null, 4)
+        );
+    });
 }
+
+// if (isIpad() && isOldIos()) {
+//     wrapConsoleLogFunctions();
+// }
 function isIpad() {
     return /\biPad\b/i.test(navigator.userAgent);
 }
