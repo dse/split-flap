@@ -1,6 +1,6 @@
-const CATCH_UP = true;
+const ROLL_CALL = true;
 
-import CatchUp from './reflow.js';
+import RollCall from './roll-call.js';
 
 export class SplitFlap {
     constructor(element, start, end, strings) {
@@ -29,11 +29,11 @@ export class SplitFlap {
         this.targetState = start;
         this.update();
     }
-    async transition(firstCatchUp) {
+    async transition(firstRollCall) {
         if (this.state === this.targetState) {
             this.transitioning = false;
-            if (CATCH_UP) {
-                firstCatchUp.tick(false);
+            if (ROLL_CALL) {
+                firstRollCall.checkIn(false);
             }
             return;
         }
@@ -50,21 +50,21 @@ export class SplitFlap {
         this.transitionTopElement.classList.add('xx--start');
         this.transitionBottomElement.classList.add('xx--start');
         if (this.targetState !== nextState) {
-            if (!CATCH_UP) {
+            if (!ROLL_CALL) {
                 this.transitionTopElement.classList.add('xx--speedy');
                 this.transitionBottomElement.classList.add('xx--speedy');
             }
         }
-        if (CATCH_UP) {
-            firstCatchUp.tick(true);
+        if (ROLL_CALL) {
+            firstRollCall.checkIn(true);
         }
-        let secondCatchUp;
-        if (CATCH_UP) {
-            await firstCatchUp.promise;
-            firstCatchUp.ready(() => this.reflow());
-            secondCatchUp = (firstCatchUp.secondCatchUp =
-                             firstCatchUp.secondCatchUp ??
-                             new CatchUp(firstCatchUp.trueCount));
+        let secondRollCall;
+        if (ROLL_CALL) {
+            await firstRollCall.promise;
+            firstRollCall.once(() => this.reflow());
+            secondRollCall = (firstRollCall.secondRollCall =
+                              firstRollCall.secondRollCall ??
+                              new RollCall(firstRollCall.countOf(true)));
         } else {
             this.reflow();
         }
@@ -76,20 +76,20 @@ export class SplitFlap {
         let handler2Executed = 0;
         let timeout1;
         let timeout2;
-        let thirdCatchUp;
+        let thirdRollCall;
         let finish = async function () {
-            if (CATCH_UP) {
-                secondCatchUp.tick();
-                await secondCatchUp.promise;
-                secondCatchUp.ready(() => this.reflow());
-                thirdCatchUp = (secondCatchUp.thirdCatchUp =
-                                secondCatchUp.thirdCatchUp ??
-                                new CatchUp(firstCatchUp.trueCount));
+            if (ROLL_CALL) {
+                secondRollCall.checkIn();
+                await secondRollCall.promise;
+                secondRollCall.once(() => this.reflow());
+                thirdRollCall = (secondRollCall.thirdRollCall =
+                                 secondRollCall.thirdRollCall ?? 
+                                 new RollCall(firstRollCall.countOf(true)));
             } else {
                 this.reflow();
             }
             this.state = nextState;
-            await this.transition(thirdCatchUp);
+            await this.transition(thirdRollCall);
         }.bind(this);
         let handler1 = async function (event) {
             if (timeout1) {
@@ -133,22 +133,22 @@ export class SplitFlap {
         timeout1 = setTimeout(handler1, ms);
         timeout2 = setTimeout(handler2, ms);
     }
-    async transitionTo(targetState, firstCatchUp) {
+    async transitionTo(targetState, firstRollCall) {
         this.targetState = targetState;
         if (this.transitioning) {
-            if (CATCH_UP) {
-                firstCatchUp.tick(false);
+            if (ROLL_CALL) {
+                firstRollCall.checkIn(false);
             }
             return;
         }
         if (this.state === this.targetState) {
-            if (CATCH_UP) {
-                firstCatchUp.tick(false);
+            if (ROLL_CALL) {
+                firstRollCall.checkIn(false);
             }
             return;
         }
         this.transitioning = true;
-        await this.transition(firstCatchUp);
+        await this.transition(firstRollCall);
     }
     reflow() {
         /*jshint -W030 */

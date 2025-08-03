@@ -6,7 +6,8 @@ import {
     MinuteSplitFlap,
     SecondSplitFlap,
 } from './split-flap.js';
-import Reflow from './reflow.js';
+
+import RollCall from './roll-call.js';
 
 export default class Clock {
     constructor() {
@@ -26,13 +27,13 @@ export default class Clock {
     }
     update() {
         let date = new Date();
-        const firstReflow = new Reflow(6);
-        this.ddd.transitionTo(date.getDay(), firstReflow);
-        this.dd.transitionTo(date.getDate(), firstReflow);
-        this.mmm.transitionTo(date.getMonth(), firstReflow);
-        this.hh.transitionTo(date.getHours(), firstReflow);
-        this.mm.transitionTo(date.getMinutes(), firstReflow);
-        this.ss.transitionTo(date.getSeconds(), firstReflow);
+        const rollCall = new RollCall(6);
+        this.ddd.transitionTo(date.getDay(), rollCall);
+        this.dd.transitionTo(date.getDate(), rollCall);
+        this.mmm.transitionTo(date.getMonth(), rollCall);
+        this.hh.transitionTo(date.getHours(), rollCall);
+        this.mm.transitionTo(date.getMinutes(), rollCall);
+        this.ss.transitionTo(date.getSeconds(), rollCall);
     }
     start() {
         if (this.timeout) {
