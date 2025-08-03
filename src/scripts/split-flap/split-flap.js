@@ -6,15 +6,14 @@ export class SplitFlap {
         this.start = start;
         this.end = end;
         this.strings = [];
-        let i;
         if (Array.isArray(strings)) {
             this.strings = strings;
         } else if (strings instanceof Function) {
-            for (i = start; i <= end; i += 1) {
+            for (let i = start; i <= end; i += 1) {
                 this.strings.push(strings(i));
             }
         } else if (strings == null) {
-            for (i = start; i <= end; i += 1) {
+            for (let i = start; i <= end; i += 1) {
                 this.strings.push(i);
             }
         }
@@ -26,7 +25,7 @@ export class SplitFlap {
         this.targetState = start;
         this.update();
     }
-    transition() {
+    async transition() {
         if (this.state === this.targetState) {
             this.transitioning = false;
             return;
@@ -56,12 +55,12 @@ export class SplitFlap {
         let handler2Executed = 0;
         let timeout1;
         let timeout2;
-        let finish = function () {
+        let finish = async function () {
             this.reflow();
             this.state = nextState;
-            this.transition();
+            await this.transition();
         }.bind(this);
-        let handler1 = function (event) {
+        let handler1 = async function (event) {
             if (timeout1) {
                 clearTimeout(timeout1);
                 timeout1 = null;
@@ -73,10 +72,10 @@ export class SplitFlap {
             this.transitionTopElement.removeEventListener('transitioncancel', handler1);
             this.transitionTopElement.classList.remove('xx--start', 'xx--transition', 'xx--speedy');
             if (handler1Executed && handler2Executed) {
-                finish();
+                await finish();
             }
         }.bind(this);
-        let handler2 = function (event) {
+        let handler2 = async function (event) {
             if (timeout2) {
                 clearTimeout(timeout2);
                 timeout2 = null;
@@ -90,7 +89,7 @@ export class SplitFlap {
             this.bottomElement.setAttribute('data-state', nextState);
             this.transitionBottomElement.classList.remove('xx--start', 'xx--transition', 'xx--speedy');
             if (handler1Executed && handler2Executed) {
-                finish();
+                await finish();
             }
         }.bind(this);
         this.transitionTopElement.addEventListener('transitionend', handler1);
@@ -103,7 +102,7 @@ export class SplitFlap {
         timeout1 = setTimeout(handler1, ms);
         timeout2 = setTimeout(handler2, ms);
     }
-    transitionTo(targetState) {
+    async transitionTo(targetState) {
         this.targetState = targetState;
         if (this.transitioning) {
             return;
@@ -112,7 +111,7 @@ export class SplitFlap {
             return;
         }
         this.transitioning = true;
-        this.transition();
+        await this.transition();
     }
     reflow() {
         /*jshint -W030 */
