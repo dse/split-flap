@@ -60,16 +60,16 @@ export class SplitFlap {
             await firstRollCall.allCounted();
             speedyCount = firstRollCall.countOf(x => x.go && x.speedy);
             slowCount   = firstRollCall.countOf(x => x.go && !x.speedy);
-            console.log(speedyCount, slowCount);
+            // console.log(speedyCount, slowCount);
             if (speedyCount) {
                 if (!firstRollCall.speedyRollCall) {
-                    console.log(`created speedy rollcall`);
+                    // console.log(`created speedy rollcall`);
                     firstRollCall.speedyRollCall = new RollCall(speedyCount);
                 }
             }
             if (slowCount) {
                 if (!firstRollCall.slowRollCall) {
-                    console.log(`created slow rollcall`);
+                    // console.log(`created slow rollcall`);
                     firstRollCall.slowRollCall = new RollCall(slowCount);
                 }
             }
@@ -83,7 +83,7 @@ export class SplitFlap {
         if (ROLL_CALL) {
             whichRollCall.once(() => this.reflow());
             if (!whichRollCall.secondRollCall) {
-                console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #2`);
+                // console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #2`);
                 whichRollCall.secondRollCall = new RollCall(speedy ? speedyCount : slowCount);
             }
             secondRollCall = whichRollCall.secondRollCall;
@@ -105,7 +105,7 @@ export class SplitFlap {
                 await secondRollCall.allCounted();
                 secondRollCall.once(() => this.reflow());
                 if (!secondRollCall.thirdRollCall) {
-                    console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #3`);
+                    // console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #3`);
                     secondRollCall.thirdRollCall = new RollCall(speedy ? speedyCount : slowCount);
                 }
                 thirdRollCall = secondRollCall.thirdRollCall;
