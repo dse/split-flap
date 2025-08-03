@@ -1,6 +1,6 @@
 /*jshint devel: true */
 
-export class SplitFlap {
+export default class SplitFlap {
     constructor(element, start, end, strings) {
         if (!element) { throw new Error(`element not found`); }
         this.id = element.id;
@@ -173,82 +173,3 @@ export class SplitFlap {
 }
 
 SplitFlap.counter = 0;
-
-export class DayOfMonthSplitFlap extends SplitFlap {
-    constructor(element) {
-        super(element, 1, 31, function (d) {
-            return `<span class="nn" data-number="${d}">${d}</span>`;
-        });
-    }
-}
-export class MonthSplitFlap extends SplitFlap {
-    constructor(element) {
-        super(element, 0, 11, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-    }
-}
-export class DayOfWeekSplitFlap extends SplitFlap {
-    constructor(element) {
-        super(element, 0, 6, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
-    }
-}
-export class HourSplitFlap extends SplitFlap {
-    constructor(element, options) {
-        super(element, 0, 23);
-        if (options != null && options.twentyFourHour) {
-            this.setTwentyFourHour();
-        } else {
-            this.setTwelveHour();
-        }
-    }
-    update() {
-        let h;
-        if (this.twentyFourHour) {
-            this.strings = [];
-            for (h = 0; h < 24; h += 1) {
-                this.strings.push(twentyFourHourString(h));
-            }
-        } else {
-            this.strings = [];
-            for (h = 0; h < 24; h += 1) {
-                this.strings.push(twelveHourString(h));
-            }
-        }
-        super.update();
-    }
-    setTwelveHour(flag) {
-        if (flag == null) { flag = true; }
-        this.twentyFourHour = !flag;
-        this.update();
-    }
-    setTwentyFourHour(flag) {
-        if (flag == null) { flag = true; }
-        this.twentyFourHour = flag;
-        this.update();
-    }
-}
-function twelveHourString(h) {
-    let h12 = (h + 11) % 12 + 1;
-    return `<span class="nn hh" data-number="${h12}">${h12}</span>` +
-        ((h < 12) ? '<span class="ampm am">am</span>' :
-         '<span class="ampm pm">pm</span>');
-}
-function twentyFourHourString(h) {
-    let hh = String(h).padStart(2, '0');
-    return `<span class="nn" data-number="${hh}">${hh}</span>`;
-}
-export class MinuteSplitFlap extends SplitFlap {
-    constructor(element) {
-        super(element, 0, 59, function (n) {
-            let mm = String(n).padStart(2, '0');
-            return `<span class="nn" data-number="${mm}">${mm}</span>`;
-        });
-    }
-}
-export class SecondSplitFlap extends SplitFlap {
-    constructor(element) {
-        super(element, 0, 59, function (n) {
-            let ss = String(n).padStart(2, '0');
-            return `<span class="nn" data-number="${ss}">${ss}</span>`;
-        });
-    }
-}

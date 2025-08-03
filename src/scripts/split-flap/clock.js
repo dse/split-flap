@@ -1,11 +1,9 @@
-import {
-    MonthSplitFlap,
-    DayOfMonthSplitFlap,
-    DayOfWeekSplitFlap,
-    HourSplitFlap,
-    MinuteSplitFlap,
-    SecondSplitFlap,
-} from './split-flap.js';
+import MonthSplitFlap      from "./clock/month.js";
+import DayOfMonthSplitFlap from "./clock/day-of-month.js";
+import DayOfWeekSplitFlap  from "./clock/day-of-week.js";
+import HourSplitFlap       from "./clock/hour.js";
+import MinuteSplitFlap     from "./clock/minute.js";
+import SecondSplitFlap     from "./clock/second.js";
 
 export default class Clock {
     constructor() {
