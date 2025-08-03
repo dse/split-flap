@@ -13,6 +13,7 @@ export default class Reflow {
         this.promise = new Promise((resolve, reject) => {
             // console.log(`Reflow #${this.id}: promise created`);
             this.resolve = resolve;
+            resolve();
         });
         this.reflowCompleted = false;
         this.trueCount = 0;
