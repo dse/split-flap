@@ -1,0 +1,35 @@
+.clock-page--helvetica-condensed-bold .viewmaster {
+    font-family: 'HelveticaNeue-CondensedBold', sans-serif;
+}
+.clock-page--helvetica-condensed-bold #date {
+    font-size: 8.5vw;
+}
+.clock-page--helvetica-condensed-bold #time {
+    font-size: 25.5vw;
+}
+.clock-page--helvetica-condensed-bold .nn[data-number] {
+    display: block;             /* required for ::first-letter to work */
+}
+.clock-page--helvetica-condensed-bold .nn[data-number]::first-letter {
+    letter-spacing: 0em;        /* first digit */
+}
+.clock-page--helvetica-condensed-bold .nn[data-number="10"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="11"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="12"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="13"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="14"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="15"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="16"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="17"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="18"]::first-letter,
+.clock-page--helvetica-condensed-bold .nn[data-number="19"]::first-letter {
+    letter-spacing: -0.08em;    /* first digit */
+}
+.clock-page--helvetica-condensed-bold .nn[data-number="01"],
+.clock-page--helvetica-condensed-bold .nn[data-number="11"],
+.clock-page--helvetica-condensed-bold .nn[data-number="21"],
+.clock-page--helvetica-condensed-bold .nn[data-number="31"],
+.clock-page--helvetica-condensed-bold .nn[data-number="41"],
+.clock-page--helvetica-condensed-bold .nn[data-number="51"] {
+    letter-spacing: -0.08em;    /* only affects second digit */
+}
