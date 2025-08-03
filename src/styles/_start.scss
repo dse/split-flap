@@ -7,42 +7,10 @@
 }
 
 :root {
-    --font-familiy:                         'Arial Black', sans-serif;
-
-    --viewmaster-border-radius:             calc(var(--split-flap-border-radius) + var(--viewmaster-padding));
-    --viewmaster-padding:                   0.5vw;
-    --viewmaster-border-width:              0.5vw;
-    --viewmaster-split-flap-gap:            1vw;
-    --viewmaster-gap:                       4vw;
-    --viewmaster-border-color:              rgba(255, 255, 255, 0.1);
-    --viewmaster-border-highlight-color:    rgba(255, 255, 255, 0.4);
-    --split-flap-border-radius:             1vw;
-    --split-flap-dimensionless-line-height: 0.8;
-    --split-flap-transition-time:           0.2s;
-    --split-flap-transition-time-speedy:    0.1s;
-
-    /* https://www.cssportal.com/css-cubic-bezier-generator/ */
-    --split-flap-transition-function:       cubic-bezier(0.35, 0, 0.75, 0.5);
-
-    --split-flap-border-top:                1px solid rgba(255, 255, 255, 0.25);
-    --split-flap-border-bottom:             1px solid black;
-
-    --split-flap-color:                     rgb(225, 225, 225);
-    --split-flap-background-color:          rgb(42, 42, 42);
-    --split-flap-darken-top:                0.25;
-    --frame-background-color:               rgb(51, 51, 51);
-    --frame-background-image:               url("/split-flap/images/brushed-metal-50-100.jpg");
-    --frame-background-blend-mode:          multiply;
-
-    --split-flap-shadow-distance: 0.5vw;
-    --split-flap-shadow-1-opacity: 0.3;
-    --split-flap-shadow-2-opacity: 0.5;
-    --split-flap-shadow-3-opacity: 0.7;
-    --split-flap-shadow-4-opacity: 0.9;
-
-    --viewmaster-perspective:               100vw; /* small values may trigger brief flashes of scrollbars during transitions */
-    --split-flap-gap:                       0.04em;
-
+    --font-familiy: 'Arial Black', sans-serif;
+    --frame-background-color: rgb(51, 51, 51);
+    --frame-background-image: url("/split-flap/images/brushed-metal-50-100.jpg");
+    --frame-background-blend-mode: multiply;
     --highlight: rgba(255, 255, 255, 0.125);
     --shadow: rgba(0, 0, 0, 0.25);
     --gradient: linear-gradient(to bottom, var(--shadow), transparent, transparent, var(--highlight));
