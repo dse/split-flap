@@ -226,62 +226,75 @@
     return "symbol" == typeof i ? i : i + "";
   }
 
-  /*global console */
-
-  var idCounter = 0;
-  var reflowCount = 0;
-  var Reflow = /*#__PURE__*/function () {
-    function Reflow(ticks) {
-      var _this = this;
-      _classCallCheck(this, Reflow);
-      this.id = idCounter;
-      idCounter += 1;
-      // console.log(`Reflow #${this.id}: initializing with ${ticks} ticks`);
-      this.ticks = ticks;
-      this.tickCount = 0;
-      this.promise = new Promise(function (resolve, reject) {
-        // console.log(`Reflow #${this.id}: promise created`);
-        _this.resolve = resolve;
+  if (!Promise.withResolvers) {
+    Promise.withResolvers = function () {
+      var obj = {};
+      obj.promise = new Promise(function (res, rej) {
+        obj.resolve = res;
+        obj.reject = rej;
       });
-      this.reflowCompleted = false;
-      this.trueCount = 0;
-      this.falseCount = 0;
+      return obj;
+    };
+  }
+  var RollCall = /*#__PURE__*/function () {
+    function RollCall(total) {
+      _classCallCheck(this, RollCall);
+      this.total = total;
+      this.count = 0;
+      var _Promise$withResolver = Promise.withResolvers(),
+        promise = _Promise$withResolver.promise,
+        resolve = _Promise$withResolver.resolve;
+      Object.assign(this, {
+        promise: promise,
+        resolve: resolve
+      });
+      this.values = [];
+      this.trueValues = [];
+      this.falseValues = [];
     }
-    return _createClass(Reflow, [{
-      key: "tick",
-      value: function tick(bool) {
-        var _this2 = this;
-        // console.log(`Reflow #${this.id}: ticking`);
-        new Promise(function (resolve, reject) {
-          return resolve();
-        }).then(function () {
-          if (_this2.tickCount >= _this2.ticks) {
-            return;
-          }
-          _this2.tickCount += 1;
-          // console.log(`Reflow #${this.id}: new tickCount is ${this.tickCount} of ${this.ticks}`);
-          if (bool) {
-            _this2.trueCount += 1;
-          } else {
-            _this2.falseCount += 1;
-          }
-          if (_this2.tickCount >= _this2.ticks) {
-            _this2.resolve();
-          }
-        });
-      }
-    }, {
-      key: "reflow",
-      value: function reflow(elt) {
-        if (this.reflowCompleted) {
-          // console.log(`Reflow #${this.id}: reflow already triggered`);
+    return _createClass(RollCall, [{
+      key: "checkIn",
+      value: function checkIn(value) {
+        if (this.count >= this.total) {
           return false;
         }
-        reflowCount += 1;
-        console.log("Reflow #".concat(this.id, ": triggering reflow #").concat(reflowCount));
-        this.reflowCompleted = true;
-        void elt.offsetHeight; // triggers the reflow
+        this.count += 1;
+        this.values.push(value);
+        this[value ? "trueValues" : "falseValues"].push(value);
+        if (this.count >= this.total) {
+          this.resolve(this.values);
+        }
         return true;
+      }
+    }, {
+      key: "allCounted",
+      value: function allCounted() {
+        return this.promise;
+      }
+    }, {
+      key: "countOf",
+      value: function countOf(value) {
+        if (typeof value === 'function') {
+          return this.values.filter(function (v) {
+            return value(v);
+          }).length;
+        }
+        return this.values.filter(function (v) {
+          return v === value;
+        }).length;
+      }
+    }, {
+      key: "once",
+      value: function once(fn) {
+        if ("_once" in this) {
+          return;
+        }
+        this._once = fn();
+      }
+    }, {
+      key: "retval",
+      value: function retval() {
+        return this._once;
       }
     }]);
   }();
@@ -319,8 +332,9 @@
     return _createClass(SplitFlap, [{
       key: "transition",
       value: function () {
-        var _transition = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(firstReflow) {
-          var nextState, currentState, currentString, nextString, secondReflow, _firstReflow$secondRe, duration, handler1Executed, handler2Executed, timeout1, timeout2, thirdReflow, finish, handler1, handler2, ms;
+        var _transition = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(firstRollCall) {
+          var _this = this;
+          var nextState, currentState, currentString, nextString, secondRollCall, _firstRollCall$second, duration, handler1Executed, handler2Executed, timeout1, timeout2, thirdRollCall, finish, handler1, handler2, ms;
           return _regenerator().w(function (_context4) {
             while (1) switch (_context4.n) {
               case 0:
@@ -330,7 +344,7 @@
                 }
                 this.transitioning = false;
                 {
-                  firstReflow.tick(false);
+                  firstRollCall.checkIn(false);
                 }
                 return _context4.a(2);
               case 1:
@@ -346,15 +360,17 @@
                 this.transitionBottomElement.setAttribute('data-state', nextState);
                 this.transitionTopElement.classList.add('xx--start');
                 this.transitionBottomElement.classList.add('xx--start');
-                if (this.targetState !== nextState && false) ;
+                if (this.targetState !== nextState) ;
                 {
-                  firstReflow.tick(true);
+                  firstRollCall.checkIn(true);
                 }
                 _context4.n = 2;
-                return firstReflow.promise;
+                return firstRollCall.promise;
               case 2:
-                firstReflow.reflow(this.element);
-                secondReflow = firstReflow.secondReflow = (_firstReflow$secondRe = firstReflow.secondReflow) !== null && _firstReflow$secondRe !== void 0 ? _firstReflow$secondRe : new Reflow(firstReflow.trueCount);
+                firstRollCall.once(function () {
+                  return _this.reflow();
+                });
+                secondRollCall = firstRollCall.secondRollCall = (_firstRollCall$second = firstRollCall.secondRollCall) !== null && _firstRollCall$second !== void 0 ? _firstRollCall$second : new RollCall(firstRollCall.countOf(true));
                 _context4.n = 4;
                 break;
               case 3:
@@ -366,16 +382,19 @@
                 handler1Executed = 0;
                 handler2Executed = 0;
                 finish = /*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-                  var _secondReflow$thirdRe;
+                  var _this2 = this;
+                  var _secondRollCall$third;
                   return _regenerator().w(function (_context) {
                     while (1) switch (_context.n) {
                       case 0:
-                        secondReflow.tick();
+                        secondRollCall.checkIn();
                         _context.n = 1;
-                        return secondReflow.promise;
+                        return secondRollCall.promise;
                       case 1:
-                        secondReflow.reflow(this.element);
-                        thirdReflow = secondReflow.thirdReflow = (_secondReflow$thirdRe = secondReflow.thirdReflow) !== null && _secondReflow$thirdRe !== void 0 ? _secondReflow$thirdRe : new Reflow(firstReflow.trueCount);
+                        secondRollCall.once(function () {
+                          return _this2.reflow();
+                        });
+                        thirdRollCall = secondRollCall.thirdRollCall = (_secondRollCall$third = secondRollCall.thirdRollCall) !== null && _secondRollCall$third !== void 0 ? _secondRollCall$third : new RollCall(firstRollCall.countOf(true));
                         _context.n = 3;
                         break;
                       case 2:
@@ -383,7 +402,7 @@
                       case 3:
                         this.state = nextState;
                         _context.n = 4;
-                        return this.transition(thirdReflow);
+                        return this.transition(thirdRollCall);
                       case 4:
                         return _context.a(2);
                     }
@@ -479,7 +498,7 @@
     }, {
       key: "transitionTo",
       value: function () {
-        var _transitionTo = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(targetState, firstReflow) {
+        var _transitionTo = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(targetState, firstRollCall) {
           return _regenerator().w(function (_context5) {
             while (1) switch (_context5.n) {
               case 0:
@@ -489,7 +508,7 @@
                   break;
                 }
                 {
-                  firstReflow.tick(false);
+                  firstRollCall.checkIn(false);
                 }
                 return _context5.a(2);
               case 1:
@@ -498,13 +517,13 @@
                   break;
                 }
                 {
-                  firstReflow.tick(false);
+                  firstRollCall.checkIn(false);
                 }
                 return _context5.a(2);
               case 2:
                 this.transitioning = true;
                 _context5.n = 3;
-                return this.transition(firstReflow);
+                return this.transition(firstRollCall);
               case 3:
                 return _context5.a(2);
             }
@@ -608,15 +627,15 @@
   }(SplitFlap);
   var HourSplitFlap = /*#__PURE__*/function (_SplitFlap4) {
     function HourSplitFlap(element, options) {
-      var _this;
+      var _this3;
       _classCallCheck(this, HourSplitFlap);
-      _this = _callSuper(this, HourSplitFlap, [element, 0, 23]);
+      _this3 = _callSuper(this, HourSplitFlap, [element, 0, 23]);
       if (options != null && options.twentyFourHour) {
-        _this.setTwentyFourHour();
+        _this3.setTwentyFourHour();
       } else {
-        _this.setTwelveHour();
+        _this3.setTwelveHour();
       }
-      return _this;
+      return _this3;
     }
     _inherits(HourSplitFlap, _SplitFlap4);
     return _createClass(HourSplitFlap, [{
@@ -712,13 +731,13 @@
       key: "update",
       value: function update() {
         var date = new Date();
-        var firstReflow = new Reflow(6);
-        this.ddd.transitionTo(date.getDay(), firstReflow);
-        this.dd.transitionTo(date.getDate(), firstReflow);
-        this.mmm.transitionTo(date.getMonth(), firstReflow);
-        this.hh.transitionTo(date.getHours(), firstReflow);
-        this.mm.transitionTo(date.getMinutes(), firstReflow);
-        this.ss.transitionTo(date.getSeconds(), firstReflow);
+        var rollCall = new RollCall(6);
+        this.ddd.transitionTo(date.getDay(), rollCall);
+        this.dd.transitionTo(date.getDate(), rollCall);
+        this.mmm.transitionTo(date.getMonth(), rollCall);
+        this.hh.transitionTo(date.getHours(), rollCall);
+        this.mm.transitionTo(date.getMinutes(), rollCall);
+        this.ss.transitionTo(date.getSeconds(), rollCall);
       }
     }, {
       key: "start",
