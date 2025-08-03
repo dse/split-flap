@@ -7,7 +7,7 @@ import {
     SecondSplitFlap,
 } from './split-flap.js';
 
-class Clock {
+export default class Clock {
     constructor() {
         this.id = "clock";
         this.mmm = new MonthSplitFlap(document.getElementById('month'));

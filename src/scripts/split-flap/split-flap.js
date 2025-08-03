@@ -6,7 +6,7 @@ var iterTime;
 var iterCallbacks = [];
 var iterCallbackId = 0;
 
-class SplitFlap {
+export class SplitFlap {
     constructor(element, start, end, strings) {
         if (!element) { throw new Error(`element not found`); }
         this.id = element.id;
@@ -180,24 +180,24 @@ class SplitFlap {
 
 SplitFlap.counter = 0;
 
-class DayOfMonthSplitFlap extends SplitFlap {
+export class DayOfMonthSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 1, 31, function (d) {
             return `<span class="nn" data-number="${d}">${d}</span>`;
         });
     }
 }
-class MonthSplitFlap extends SplitFlap {
+export class MonthSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 11, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
     }
 }
-class DayOfWeekSplitFlap extends SplitFlap {
+export class DayOfWeekSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 6, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
     }
 }
-class HourSplitFlap extends SplitFlap {
+export class HourSplitFlap extends SplitFlap {
     constructor(element, options) {
         super(element, 0, 23);
         if (options != null && options.twentyFourHour) {
@@ -242,7 +242,7 @@ function twentyFourHourString(h) {
     var hh = String(h).padStart(2, '0');
     return `<span class="nn" data-number="${hh}">${hh}</span>`;
 }
-class MinuteSplitFlap extends SplitFlap {
+export class MinuteSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 59, function (n) {
             var mm = String(n).padStart(2, '0');
@@ -250,7 +250,7 @@ class MinuteSplitFlap extends SplitFlap {
         });
     }
 }
-class SecondSplitFlap extends SplitFlap {
+export class SecondSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 59, function (n) {
             var ss = String(n).padStart(2, '0');

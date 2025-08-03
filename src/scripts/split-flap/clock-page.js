@@ -1,6 +1,8 @@
 /*jshint browser: true, devel: true, varstmt: false */
 /*global Clock */
 
+import Clock from './clock.js';
+
 var wakeLockObject;
 function acquireWakeLock() {
     if (!('wakeLock' in navigator) || wakeLockObject) {
