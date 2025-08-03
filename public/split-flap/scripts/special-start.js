@@ -2,7 +2,22 @@
 
 console.log('This is special-start.js.');
 
-/// if (isIpad() && isOldIos()) {
+if (isIpad() || isIphone()) {
+    alertOnError();
+    window.addEventListener('load', function () {
+        document.body.classList.add('clock-page--helvetica-condensed-bold');
+    });
+}
+
+function isIpad() {
+    return /\biPad\b/i.test(navigator.userAgent);
+}
+
+function isIphone() {
+    return /\biPhone\b/i.test(navigator.userAgent);
+}
+
+function alertOnError() {
     window.addEventListener('error', function (event) {
         window.alert(
             "ERROR: " + event.message + "\n" +
@@ -10,17 +25,12 @@ console.log('This is special-start.js.');
                 JSON.stringify(event.error, null, 4)
         );
     });
-// }
-
-// if (isIpad() && isOldIos()) {
-//     wrapConsoleLogFunctions();
-// }
-function isIpad() {
-    return /\biPad\b/i.test(navigator.userAgent);
 }
+
 function isOldIos() {
     return /\b9_3_5\b/.test(navigator.userAgent);
 }
+
 function wrapConsoleLogFunctions() {
     var oldConsoleLog = console.log;
     var oldConsoleWarn = console.warn;
