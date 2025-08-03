@@ -49,7 +49,8 @@ export class SplitFlap {
         this.transitionBottomElement.setAttribute('data-state', nextState);
         this.transitionTopElement.classList.add('xx--start');
         this.transitionBottomElement.classList.add('xx--start');
-        if (this.targetState !== nextState) {
+        const iAmSpeedy = this.targetState !== nextState;
+        if (iAmSpeedy) {
             if (!ROLL_CALL) {
                 this.transitionTopElement.classList.add('xx--speedy');
                 this.transitionBottomElement.classList.add('xx--speedy');
