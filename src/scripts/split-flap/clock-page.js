@@ -1,9 +1,6 @@
-/*jshint browser: true, devel: true, varstmt: false */
-/*global Clock */
-
 import Clock from './clock.js';
 
-var wakeLockObject;
+let wakeLockObject;
 function acquireWakeLock() {
     if (!('wakeLock' in navigator) || wakeLockObject) {
         return;
@@ -23,7 +20,7 @@ function releaseWakeLock() {
     wakeLockObject = null;
 }
 
-var serviceWorker;
+let serviceWorker;
 function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) {
         return;
@@ -61,7 +58,7 @@ function registerServiceWorker() {
 }
 
 function setupFromQueryString() {
-    var sp = new URL(location.href).searchParams;
+    let sp = new URL(location.href).searchParams;
     if (sp.has('arial-black') || sp.has('arialBlack'))    { document.body.classList.add('clock-page--arial-black'); }
     if (sp.has('arial'))                                  { document.body.classList.add('clock-page--arial'); }
     if (sp.has('italic'))                                 { document.body.classList.add('clock-page--italic'); }
@@ -69,9 +66,9 @@ function setupFromQueryString() {
     if (sp.has('times'))                                  { document.body.classList.add('clock-page--times'); }
     if (sp.has('futura'))                                 { document.body.classList.add('clock-page--futura'); }
     if (sp.has('helvboldcond') || sp.has('helvcondbold')) { document.body.classList.add('clock-page--helvetica-condensed-bold'); }
-    var i;
-    var timeWeight;
-    var dateWeight;
+    let i;
+    let timeWeight;
+    let dateWeight;
     if (sp.has('bold'))                { dateWeight = 700; }
     if (sp.getAll('bold').length >= 2) { timeWeight = 700; }
     for (i = 100; i <= 900; i += 100) {
@@ -82,9 +79,9 @@ function setupFromQueryString() {
     }
     if (timeWeight != null) { document.body.classList.add('clock-page--time-' + timeWeight); }
     if (dateWeight != null) { document.body.classList.add('clock-page--date-' + dateWeight); }
-    var fg = sp.get('fg');
-    var bg = sp.get('bg');
-    var frame = sp.get('frame');
+    let fg = sp.get('fg');
+    let bg = sp.get('bg');
+    let frame = sp.get('frame');
     if (fg    != null && /^[0-9A-Za-z]{3}(?:[0-9A-Za-z]{3})?$/.test(fg))    { fg    = '#' + fg;    }
     if (bg    != null && /^[0-9A-Za-z]{3}(?:[0-9A-Za-z]{3})?$/.test(bg))    { bg    = '#' + bg;    }
     if (frame != null && /^[0-9A-Za-z]{3}(?:[0-9A-Za-z]{3})?$/.test(frame)) { frame = '#' + frame; }
@@ -108,15 +105,15 @@ function setupPwa() {
     });
 }
 
-var clock;
+let clock;
 
 function setupPrefs() {
-    var prefsModal = document.getElementById('prefsModal');
-    var prefsToggle = document.getElementById('prefsToggle');
-    var closePrefsModal = document.getElementById('closePrefsModal');
-    var prefsModalBackingLayer = document.getElementById('prefsModalBackingLayer');
-    var prefsForm = document.getElementById('prefsForm');
-    var twentyFourHourCheckbox = document.getElementById('twentyFourHourCheckbox');
+    let prefsModal = document.getElementById('prefsModal');
+    let prefsToggle = document.getElementById('prefsToggle');
+    let closePrefsModal = document.getElementById('closePrefsModal');
+    let prefsModalBackingLayer = document.getElementById('prefsModalBackingLayer');
+    let prefsForm = document.getElementById('prefsForm');
+    let twentyFourHourCheckbox = document.getElementById('twentyFourHourCheckbox');
     prefsToggle.addEventListener('click', function (event) {
         event.preventDefault();
         prefsModal.style.display = (prefsModal.style.display !== 'none' &&
@@ -133,7 +130,7 @@ function setupPrefs() {
     prefsForm.addEventListener('submit', function (event) {
         event.preventDefault();
     });
-    var twentyFourHour = JSON.parse(localStorage.getItem('twentyFourHour'));
+    let twentyFourHour = JSON.parse(localStorage.getItem('twentyFourHour'));
     if (twentyFourHour == null) {
         twentyFourHour = false;
     }

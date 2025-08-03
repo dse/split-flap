@@ -1,5 +1,3 @@
-/*jshint browser: true, varstmt: false, -W069 */
-
 export class SplitFlap {
     constructor(element, start, end, strings) {
         if (!element) { throw new Error(`element not found`); }
@@ -8,7 +6,7 @@ export class SplitFlap {
         this.start = start;
         this.end = end;
         this.strings = [];
-        var i;
+        let i;
         if (Array.isArray(strings)) {
             this.strings = strings;
         } else if (strings instanceof Function) {
@@ -33,10 +31,10 @@ export class SplitFlap {
             this.transitioning = false;
             return;
         }
-        var nextState = (this.state - this.start + 1) % this.strings.length + this.start;
-        var currentState  = this.state;
-        var currentString = this.strings[this.state - this.start];
-        var nextString    = this.strings[nextState - this.start];
+        let nextState = (this.state - this.start + 1) % this.strings.length + this.start;
+        let currentState  = this.state;
+        let currentString = this.strings[this.state - this.start];
+        let nextString    = this.strings[nextState - this.start];
         this.transitionTopElement.innerHTML = currentString;
         this.transitionTopElement.setAttribute('data-state', currentState);
         this.topElement.innerHTML = nextString;
@@ -52,18 +50,18 @@ export class SplitFlap {
         this.reflow();
         this.transitionTopElement.classList.add('xx--transition');
         this.transitionBottomElement.classList.add('xx--transition');
-        var duration = Math.max(this.getTransitionDuration(this.transitionTopElement),
+        let duration = Math.max(this.getTransitionDuration(this.transitionTopElement),
                                 this.getTransitionDuration(this.transitionBottomElement));
-        var handler1Executed = 0;
-        var handler2Executed = 0;
-        var timeout1;
-        var timeout2;
-        var finish = function () {
+        let handler1Executed = 0;
+        let handler2Executed = 0;
+        let timeout1;
+        let timeout2;
+        let finish = function () {
             this.reflow();
             this.state = nextState;
             this.transition();
         }.bind(this);
-        var handler1 = function (event) {
+        let handler1 = function (event) {
             if (timeout1) {
                 clearTimeout(timeout1);
                 timeout1 = null;
@@ -78,7 +76,7 @@ export class SplitFlap {
                 finish();
             }
         }.bind(this);
-        var handler2 = function (event) {
+        let handler2 = function (event) {
             if (timeout2) {
                 clearTimeout(timeout2);
                 timeout2 = null;
@@ -101,7 +99,7 @@ export class SplitFlap {
         this.transitionBottomElement.addEventListener('transitioncancel', handler2);
 
         // in case transition events fail...
-        var ms = duration + 100;
+        let ms = duration + 100;
         timeout1 = setTimeout(handler1, ms);
         timeout2 = setTimeout(handler2, ms);
     }
@@ -122,7 +120,7 @@ export class SplitFlap {
         /*jshint +W030 */
     }
     getTransitionDuration(element) {
-        var cs = window.getComputedStyle(element);
+        let cs = window.getComputedStyle(element);
         return this.parseDuration(cs.transitionDuration) || this.parseDuration(cs.webkitTransitionDuration);
     }
     parseDuration(dur) {
@@ -141,8 +139,8 @@ export class SplitFlap {
     // You call this after changing 12/24 hour setting and such.
     // This can execute during transitions.
     update() {
-        var state;
-        var string;
+        let state;
+        let string;
         if (this.topElement.hasAttribute('data-state')) {
             state = parseInt(this.topElement.getAttribute('data-state'), 10);
             string = isNaN(state) ? '' : this.strings[state - this.start];
@@ -201,7 +199,7 @@ export class HourSplitFlap extends SplitFlap {
         }
     }
     update() {
-        var h;
+        let h;
         if (this.twentyFourHour) {
             this.strings = [];
             for (h = 0; h < 24; h += 1) {
@@ -227,19 +225,19 @@ export class HourSplitFlap extends SplitFlap {
     }
 }
 function twelveHourString(h) {
-    var h12 = (h + 11) % 12 + 1;
+    let h12 = (h + 11) % 12 + 1;
     return `<span class="nn hh" data-number="${h12}">${h12}</span>` +
         ((h < 12) ? '<span class="ampm am">am</span>' :
          '<span class="ampm pm">pm</span>');
 }
 function twentyFourHourString(h) {
-    var hh = String(h).padStart(2, '0');
+    let hh = String(h).padStart(2, '0');
     return `<span class="nn" data-number="${hh}">${hh}</span>`;
 }
 export class MinuteSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 59, function (n) {
-            var mm = String(n).padStart(2, '0');
+            let mm = String(n).padStart(2, '0');
             return `<span class="nn" data-number="${mm}">${mm}</span>`;
         });
     }
@@ -247,7 +245,7 @@ export class MinuteSplitFlap extends SplitFlap {
 export class SecondSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 59, function (n) {
-            var ss = String(n).padStart(2, '0');
+            let ss = String(n).padStart(2, '0');
             return `<span class="nn" data-number="${ss}">${ss}</span>`;
         });
     }
