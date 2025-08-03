@@ -60,7 +60,7 @@ export class SplitFlap {
         }
         let secondRollCall;
         if (ROLL_CALL) {
-            await firstRollCall.promise;
+            await firstRollCall.allCounted();
             firstRollCall.once(() => this.reflow());
             secondRollCall = (firstRollCall.secondRollCall =
                               firstRollCall.secondRollCall ??
@@ -80,7 +80,7 @@ export class SplitFlap {
         let finish = async function () {
             if (ROLL_CALL) {
                 secondRollCall.checkIn();
-                await secondRollCall.promise;
+                await secondRollCall.allCounted();
                 secondRollCall.once(() => this.reflow());
                 thirdRollCall = (secondRollCall.thirdRollCall =
                                  secondRollCall.thirdRollCall ?? 
