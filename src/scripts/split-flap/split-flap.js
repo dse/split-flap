@@ -33,7 +33,7 @@ export class SplitFlap {
         if (this.state === this.targetState) {
             this.transitioning = false;
             if (ROLL_CALL) {
-                firstRollCall.checkIn(false);
+                firstRollCall.checkIn({ "go": false });
             }
             return;
         }
@@ -56,7 +56,7 @@ export class SplitFlap {
             }
         }
         if (ROLL_CALL) {
-            firstRollCall.checkIn(true);
+            firstRollCall.checkIn({ "go": true });
         }
         let secondRollCall;
         if (ROLL_CALL) {
@@ -64,7 +64,7 @@ export class SplitFlap {
             firstRollCall.once(() => this.reflow());
             secondRollCall = (firstRollCall.secondRollCall =
                               firstRollCall.secondRollCall ??
-                              new RollCall(firstRollCall.countOf(true)));
+                              new RollCall(firstRollCall.countOf(v => v?.go)));
         } else {
             this.reflow();
         }
@@ -84,7 +84,7 @@ export class SplitFlap {
                 secondRollCall.once(() => this.reflow());
                 thirdRollCall = (secondRollCall.thirdRollCall =
                                  secondRollCall.thirdRollCall ?? 
-                                 new RollCall(firstRollCall.countOf(true)));
+                                 new RollCall(firstRollCall.countOf(v => v?.go)));
             } else {
                 this.reflow();
             }
@@ -137,13 +137,13 @@ export class SplitFlap {
         this.targetState = targetState;
         if (this.transitioning) {
             if (ROLL_CALL) {
-                firstRollCall.checkIn(false);
+                firstRollCall.checkIn({ "go": false });
             }
             return;
         }
         if (this.state === this.targetState) {
             if (ROLL_CALL) {
-                firstRollCall.checkIn(false);
+                firstRollCall.checkIn({ "go": false });
             }
             return;
         }
