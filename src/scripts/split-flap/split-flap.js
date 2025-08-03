@@ -1,4 +1,4 @@
-const REFLOW = false;
+const REFLOW = true;
 
 import Reflow from './reflow.js';
 
@@ -50,8 +50,10 @@ export class SplitFlap {
         this.transitionTopElement.classList.add('xx--start');
         this.transitionBottomElement.classList.add('xx--start');
         if (this.targetState !== nextState) {
-            this.transitionTopElement.classList.add('xx--speedy');
-            this.transitionBottomElement.classList.add('xx--speedy');
+            if (!REFLOW) {
+                this.transitionTopElement.classList.add('xx--speedy');
+                this.transitionBottomElement.classList.add('xx--speedy');
+            }
         }
         if (REFLOW) {
             firstReflow.tick(true);
@@ -146,7 +148,7 @@ export class SplitFlap {
             return;
         }
         this.transitioning = true;
-        await this.transition();
+        await this.transition(firstReflow);
     }
     reflow() {
         /*jshint -W030 */
