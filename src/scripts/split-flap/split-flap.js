@@ -1,11 +1,5 @@
 /*jshint browser: true, varstmt: false, -W069 */
 
-var iterId = 0;
-var iterQueues;
-var iterTime;
-var iterCallbacks = [];
-var iterCallbackId = 0;
-
 export class SplitFlap {
     constructor(element, start, end, strings) {
         if (!element) { throw new Error(`element not found`); }
