@@ -1,62 +1,5 @@
 import Clock from './clock.js';
 
-let wakeLockObject;
-function acquireWakeLock() {
-    if (!('wakeLock' in navigator) || wakeLockObject) {
-        return;
-    }
-    navigator.wakeLock.request('screen').then(function (wakeLock) {
-        wakeLockObject = wakeLock;
-        wakeLockObject.addEventListener('release', function () {
-            wakeLockObject = null;
-        });
-    });
-}
-function releaseWakeLock() {
-    if (!('wakeLock' in navigator) || !wakeLockObject) {
-        return;
-    }
-    wakeLockObject.release();
-    wakeLockObject = null;
-}
-
-let serviceWorker;
-function registerServiceWorker() {
-    if (!('serviceWorker' in navigator)) {
-        return;
-    }
-    window.addEventListener('beforeinstallprompt', function (event) {
-        event.preventDefault();
-        window.deferredPrompt = event;
-        if (document.readyState === 'complete') {
-            document.getElementById('pwa').style.display = 'block';
-        } else {
-            window.addEventListener('load', function () {
-                document.getElementById('pwa').style.display = 'block';
-            });
-        }
-    });
-    window.addEventListener('appinstalled', function (event) {
-        window.deferredPrompt = null;
-        if (document.readyState === 'complete') {
-            document.getElementById('pwa').style.display = 'none';
-        } else {
-            window.addEventListener('load', function () {
-                document.getElementById('pwa').style.display = 'none';
-            });
-        }
-    });
-    navigator.serviceWorker.register("service-worker.js", null).then(function (registration) {
-        if (registration.installing) {
-            serviceWorker = registration.installing;
-        } else if (registration.waiting) {
-            serviceWorker = registration.waiting;
-        } else if (registration.active) {
-            serviceWorker = registration.active;
-        }
-    });
-}
-
 function setupFromQueryString() {
     let sp = new URL(location.href).searchParams;
     if (sp.has('arial-black') || sp.has('arialBlack'))    { document.body.classList.add('clock-page--arial-black'); }
@@ -89,20 +32,6 @@ function setupFromQueryString() {
     if (bg    != null) { document.querySelector(':root').style.setProperty('--split-flap-background-color', bg); }
     if (frame != null) { document.querySelector(':root').style.setProperty('--frame-background-color', frame); }
     if (sp.has('font')) { document.querySelector(':root').style.setProperty('--font-family', sp.get('font')); }
-}
-
-function setupPwa() {
-    Array.from(document.querySelectorAll('[data-pwa-install]')).forEach(function (btn) {
-        btn.addEventListener('click', function (event) {
-            event.preventDefault();
-        });
-    });
-    Array.from(document.querySelectorAll('[data-pwa-dismiss]')).forEach(function (btn) {
-        btn.addEventListener('click', function (event) {
-            event.preventDefault();
-            document.getElementById('pwa').style.display = 'none';
-        });
-    });
 }
 
 let clock;
@@ -145,9 +74,6 @@ function setupPrefs() {
 }
 
 window.addEventListener('load', function () {
-    acquireWakeLock();
-    registerServiceWorker();
-    setupPwa();
     setupFromQueryString();
     clock = new Clock();
     setupPrefs();
