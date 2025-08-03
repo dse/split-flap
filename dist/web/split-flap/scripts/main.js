@@ -254,7 +254,8 @@
     }
     return _createClass(RollCall, [{
       key: "checkIn",
-      value: function checkIn(value) {
+      value: function checkIn() {
+        var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
         if (this.count >= this.total) {
           return false;
         }
@@ -334,7 +335,7 @@
       value: function () {
         var _transition = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(firstRollCall) {
           var _this = this;
-          var nextState, currentState, currentString, nextString, secondRollCall, _firstRollCall$second, duration, handler1Executed, handler2Executed, timeout1, timeout2, thirdRollCall, finish, handler1, handler2, ms;
+          var nextState, currentState, currentString, nextString, speedy, speedyCount, slowCount, whichRollCall, secondRollCall, duration, handler1Executed, handler2Executed, timeout1, timeout2, thirdRollCall, finish, handler1, handler2, ms;
           return _regenerator().w(function (_context4) {
             while (1) switch (_context4.n) {
               case 0:
@@ -344,7 +345,9 @@
                 }
                 this.transitioning = false;
                 {
-                  firstRollCall.checkIn(false);
+                  firstRollCall.checkIn({
+                    "go": false
+                  });
                 }
                 return _context4.a(2);
               case 1:
@@ -360,22 +363,49 @@
                 this.transitionBottomElement.setAttribute('data-state', nextState);
                 this.transitionTopElement.classList.add('xx--start');
                 this.transitionBottomElement.classList.add('xx--start');
-                if (this.targetState !== nextState) ;
-                {
-                  firstRollCall.checkIn(true);
-                }
-                _context4.n = 2;
-                return firstRollCall.promise;
-              case 2:
-                firstRollCall.once(function () {
-                  return _this.reflow();
+                speedy = this.targetState !== nextState;
+                firstRollCall.checkIn({
+                  "go": true,
+                  "speedy": speedy
                 });
-                secondRollCall = firstRollCall.secondRollCall = (_firstRollCall$second = firstRollCall.secondRollCall) !== null && _firstRollCall$second !== void 0 ? _firstRollCall$second : new RollCall(firstRollCall.countOf(true));
-                _context4.n = 4;
-                break;
+                _context4.n = 2;
+                return firstRollCall.allCounted();
+              case 2:
+                speedyCount = firstRollCall.countOf(function (x) {
+                  return x.go && x.speedy;
+                });
+                slowCount = firstRollCall.countOf(function (x) {
+                  return x.go && !x.speedy;
+                });
+                // console.log(speedyCount, slowCount);
+                if (speedyCount) {
+                  if (!firstRollCall.speedyRollCall) {
+                    // console.log(`created speedy rollcall`);
+                    firstRollCall.speedyRollCall = new RollCall(speedyCount);
+                  }
+                }
+                if (slowCount) {
+                  if (!firstRollCall.slowRollCall) {
+                    // console.log(`created slow rollcall`);
+                    firstRollCall.slowRollCall = new RollCall(slowCount);
+                  }
+                }
+                whichRollCall = speedy ? firstRollCall.speedyRollCall : firstRollCall.slowRollCall;
               case 3:
-                this.reflow();
-              case 4:
+                if (speedy) {
+                  this.transitionTopElement.classList.add('xx--speedy');
+                  this.transitionBottomElement.classList.add('xx--speedy');
+                }
+                {
+                  whichRollCall.once(function () {
+                    return _this.reflow();
+                  });
+                  if (!whichRollCall.secondRollCall) {
+                    // console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #2`);
+                    whichRollCall.secondRollCall = new RollCall(speedy ? speedyCount : slowCount);
+                  }
+                  secondRollCall = whichRollCall.secondRollCall;
+                }
                 this.transitionTopElement.classList.add('xx--transition');
                 this.transitionBottomElement.classList.add('xx--transition');
                 duration = Math.max(this.getTransitionDuration(this.transitionTopElement), this.getTransitionDuration(this.transitionBottomElement));
@@ -383,18 +413,21 @@
                 handler2Executed = 0;
                 finish = /*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
                   var _this2 = this;
-                  var _secondRollCall$third;
                   return _regenerator().w(function (_context) {
                     while (1) switch (_context.n) {
                       case 0:
                         secondRollCall.checkIn();
                         _context.n = 1;
-                        return secondRollCall.promise;
+                        return secondRollCall.allCounted();
                       case 1:
                         secondRollCall.once(function () {
                           return _this2.reflow();
                         });
-                        thirdRollCall = secondRollCall.thirdRollCall = (_secondRollCall$third = secondRollCall.thirdRollCall) !== null && _secondRollCall$third !== void 0 ? _secondRollCall$third : new RollCall(firstRollCall.countOf(true));
+                        if (!secondRollCall.thirdRollCall) {
+                          // console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #3`);
+                          secondRollCall.thirdRollCall = new RollCall(speedy ? speedyCount : slowCount);
+                        }
+                        thirdRollCall = secondRollCall.thirdRollCall;
                         _context.n = 3;
                         break;
                       case 2:
@@ -485,7 +518,7 @@
                 ms = duration + 100;
                 timeout1 = setTimeout(handler1, ms);
                 timeout2 = setTimeout(handler2, ms);
-              case 5:
+              case 4:
                 return _context4.a(2);
             }
           }, _callee4, this);
@@ -508,7 +541,9 @@
                   break;
                 }
                 {
-                  firstRollCall.checkIn(false);
+                  firstRollCall.checkIn({
+                    "go": false
+                  });
                 }
                 return _context5.a(2);
               case 1:
@@ -517,7 +552,9 @@
                   break;
                 }
                 {
-                  firstRollCall.checkIn(false);
+                  firstRollCall.checkIn({
+                    "go": false
+                  });
                 }
                 return _context5.a(2);
               case 2:
@@ -730,7 +767,7 @@
     }, {
       key: "update",
       value: function update() {
-        var date = new Date();
+        var date = new Date(Date.now() - 1000 * (600 + 10800));
         var rollCall = new RollCall(6);
         this.ddd.transitionTo(date.getDay(), rollCall);
         this.dd.transitionTo(date.getDate(), rollCall);
