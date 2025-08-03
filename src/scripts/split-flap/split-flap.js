@@ -1,6 +1,12 @@
-import Reflow from './reflow.js';
+/*jshint browser: true, varstmt: false, -W069 */
 
-export class SplitFlap {
+var iterId = 0;
+var iterQueues;
+var iterTime;
+var iterCallbacks = [];
+var iterCallbackId = 0;
+
+class SplitFlap {
     constructor(element, start, end, strings) {
         if (!element) { throw new Error(`element not found`); }
         this.id = element.id;
@@ -8,7 +14,7 @@ export class SplitFlap {
         this.start = start;
         this.end = end;
         this.strings = [];
-        let i;
+        var i;
         if (Array.isArray(strings)) {
             this.strings = strings;
         } else if (strings instanceof Function) {
@@ -28,16 +34,15 @@ export class SplitFlap {
         this.targetState = start;
         this.update();
     }
-    async transition(firstReflow) {
+    transition() {
         if (this.state === this.targetState) {
             this.transitioning = false;
-            firstReflow.tick(false);
             return;
         }
-        let nextState = (this.state - this.start + 1) % this.strings.length + this.start;
-        let currentState  = this.state;
-        let currentString = this.strings[this.state - this.start];
-        let nextString    = this.strings[nextState - this.start];
+        var nextState = (this.state - this.start + 1) % this.strings.length + this.start;
+        var currentState  = this.state;
+        var currentString = this.strings[this.state - this.start];
+        var nextString    = this.strings[nextState - this.start];
         this.transitionTopElement.innerHTML = currentString;
         this.transitionTopElement.setAttribute('data-state', currentState);
         this.topElement.innerHTML = nextString;
@@ -50,33 +55,21 @@ export class SplitFlap {
             this.transitionTopElement.classList.add('xx--speedy');
             this.transitionBottomElement.classList.add('xx--speedy');
         }
-
-        firstReflow.tick(true);
-        await firstReflow.promise;
-        firstReflow.reflow(this.element);
-        const secondReflow = (firstReflow.secondReflow = 
-                              firstReflow.secondReflow ?? 
-                              new Reflow(firstReflow.trueCount));
-
+        this.reflow();
         this.transitionTopElement.classList.add('xx--transition');
         this.transitionBottomElement.classList.add('xx--transition');
-        let duration = Math.max(this.getTransitionDuration(this.transitionTopElement),
+        var duration = Math.max(this.getTransitionDuration(this.transitionTopElement),
                                 this.getTransitionDuration(this.transitionBottomElement));
-        let handler1Executed = 0;
-        let handler2Executed = 0;
-        let timeout1;
-        let timeout2;
-        let finish = async function () {
-            secondReflow.tick();
-            await secondReflow.promise;
-            secondReflow.reflow(this.element);
-            const thirdReflow = (secondReflow.thirdReflow =
-                                 secondReflow.thirdReflow ??
-                                 new Reflow(firstReflow.trueCount));
+        var handler1Executed = 0;
+        var handler2Executed = 0;
+        var timeout1;
+        var timeout2;
+        var finish = function () {
+            this.reflow();
             this.state = nextState;
-            this.transition(thirdReflow);
+            this.transition();
         }.bind(this);
-        let handler1 = function (event) {
+        var handler1 = function (event) {
             if (timeout1) {
                 clearTimeout(timeout1);
                 timeout1 = null;
@@ -91,7 +84,7 @@ export class SplitFlap {
                 finish();
             }
         }.bind(this);
-        let handler2 = function (event) {
+        var handler2 = function (event) {
             if (timeout2) {
                 clearTimeout(timeout2);
                 timeout2 = null;
@@ -114,25 +107,20 @@ export class SplitFlap {
         this.transitionBottomElement.addEventListener('transitioncancel', handler2);
 
         // in case transition events fail...
-        let ms = duration + 100;
+        var ms = duration + 100;
         timeout1 = setTimeout(handler1, ms);
         timeout2 = setTimeout(handler2, ms);
     }
-    transitionTo(targetState, firstReflow) {
+    transitionTo(targetState) {
         this.targetState = targetState;
         if (this.transitioning) {
-            firstReflow.tick(false);
             return;
         }
         if (this.state === this.targetState) {
-            firstReflow.tick(false);
             return;
         }
         this.transitioning = true;
-        this.transition(firstReflow);
-    }
-    goTo(targetState, firstReflow) {
-        this.transitionTo(targetState, firstReflow);
+        this.transition();
     }
     reflow() {
         /*jshint -W030 */
@@ -140,7 +128,7 @@ export class SplitFlap {
         /*jshint +W030 */
     }
     getTransitionDuration(element) {
-        let cs = window.getComputedStyle(element);
+        var cs = window.getComputedStyle(element);
         return this.parseDuration(cs.transitionDuration) || this.parseDuration(cs.webkitTransitionDuration);
     }
     parseDuration(dur) {
@@ -159,8 +147,8 @@ export class SplitFlap {
     // You call this after changing 12/24 hour setting and such.
     // This can execute during transitions.
     update() {
-        let state;
-        let string;
+        var state;
+        var string;
         if (this.topElement.hasAttribute('data-state')) {
             state = parseInt(this.topElement.getAttribute('data-state'), 10);
             string = isNaN(state) ? '' : this.strings[state - this.start];
@@ -192,24 +180,24 @@ export class SplitFlap {
 
 SplitFlap.counter = 0;
 
-export class DayOfMonthSplitFlap extends SplitFlap {
+class DayOfMonthSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 1, 31, function (d) {
             return `<span class="nn" data-number="${d}">${d}</span>`;
         });
     }
 }
-export class MonthSplitFlap extends SplitFlap {
+class MonthSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 11, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
     }
 }
-export class DayOfWeekSplitFlap extends SplitFlap {
+class DayOfWeekSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 6, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
     }
 }
-export class HourSplitFlap extends SplitFlap {
+class HourSplitFlap extends SplitFlap {
     constructor(element, options) {
         super(element, 0, 23);
         if (options != null && options.twentyFourHour) {
@@ -219,7 +207,7 @@ export class HourSplitFlap extends SplitFlap {
         }
     }
     update() {
-        let h;
+        var h;
         if (this.twentyFourHour) {
             this.strings = [];
             for (h = 0; h < 24; h += 1) {
@@ -245,29 +233,28 @@ export class HourSplitFlap extends SplitFlap {
     }
 }
 function twelveHourString(h) {
-    let h12 = (h + 11) % 12 + 1;
+    var h12 = (h + 11) % 12 + 1;
     return `<span class="nn hh" data-number="${h12}">${h12}</span>` +
         ((h < 12) ? '<span class="ampm am">am</span>' :
          '<span class="ampm pm">pm</span>');
 }
 function twentyFourHourString(h) {
-    let hh = String(h).padStart(2, '0');
+    var hh = String(h).padStart(2, '0');
     return `<span class="nn" data-number="${hh}">${hh}</span>`;
 }
-export class MinuteSplitFlap extends SplitFlap {
+class MinuteSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 59, function (n) {
-            let mm = String(n).padStart(2, '0');
+            var mm = String(n).padStart(2, '0');
             return `<span class="nn" data-number="${mm}">${mm}</span>`;
         });
     }
 }
-export class SecondSplitFlap extends SplitFlap {
+class SecondSplitFlap extends SplitFlap {
     constructor(element) {
         super(element, 0, 59, function (n) {
-            let ss = String(n).padStart(2, '0');
+            var ss = String(n).padStart(2, '0');
             return `<span class="nn" data-number="${ss}">${ss}</span>`;
         });
     }
-
 }
