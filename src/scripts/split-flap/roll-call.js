@@ -19,7 +19,7 @@ export default class RollCall {
         this.trueValues = [];
         this.falseValues = [];
     }
-    checkIn(value) {
+    checkIn(value = true) {
         if (this.count >= this.total) {
             return false;
         }
