@@ -1,0 +1,55 @@
+.clock-page--arial .viewmaster {
+    font-family: 'Arial', sans-serif;
+}
+
+
+.clock-page--italic .viewmaster {
+    font-style: italic;
+}
+.clock-page--bold .viewmaster--date {
+    font-weight: bold;
+}
+.clock-page--bold-bold .viewmaster--time {
+    font-weight: bold;
+}
+
+.clock-page--times .viewmaster {
+    font-family: 'Times New Roman', 'Times Roman', 'Times', sans-serif;
+}
+.clock-page--times #date {
+    font-size: 7.5vw;
+}
+.clock-page--times #time {
+    font-size: 22.5vw;
+}
+.clock-page--futura .viewmaster {
+    font-family: 'Futura', sans-serif;
+}
+.clock-page--futura {
+    --split-flap-dimensionless-line-height: 0.90;
+}
+.clock-page--futura #date { font-size:  6.5vw; }
+.clock-page--futura #time { font-size: 19.5vw; }
+
+.clock-page--helvetica .viewmaster {
+    font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+}
+
+.clock-page--time-100 .viewmaster--time { font-weight: 100; }
+.clock-page--time-200 .viewmaster--time { font-weight: 200; }
+.clock-page--time-300 .viewmaster--time { font-weight: 300; }
+.clock-page--time-400 .viewmaster--time { font-weight: 400; }
+.clock-page--time-500 .viewmaster--time { font-weight: 500; }
+.clock-page--time-600 .viewmaster--time { font-weight: 600; }
+.clock-page--time-700 .viewmaster--time { font-weight: 700; }
+.clock-page--time-800 .viewmaster--time { font-weight: 800; }
+.clock-page--time-900 .viewmaster--time { font-weight: 900; }
+.clock-page--date-100 .viewmaster--date { font-weight: 100; }
+.clock-page--date-200 .viewmaster--date { font-weight: 200; }
+.clock-page--date-300 .viewmaster--date { font-weight: 300; }
+.clock-page--date-400 .viewmaster--date { font-weight: 400; }
+.clock-page--date-500 .viewmaster--date { font-weight: 500; }
+.clock-page--date-600 .viewmaster--date { font-weight: 600; }
+.clock-page--date-700 .viewmaster--date { font-weight: 700; }
+.clock-page--date-800 .viewmaster--date { font-weight: 800; }
+.clock-page--date-900 .viewmaster--date { font-weight: 900; }
