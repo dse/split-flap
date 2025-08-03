@@ -13,18 +13,25 @@ import resolve       from '@rollup/plugin-node-resolve';
 import * as rollup   from 'rollup';
 import nunjucks      from 'gulp-nunjucks-render';
 import { globSync }  from 'glob';
+import { Transform } from 'node:stream';
+import colors        from '@colors/colors';
+import path          from 'node:path';
 
-const dist = isDev() ? '_dev/dist' : 'dist';
+const dist = isDev() ? '_dev/dist/web' : 'dist/web';
 fs.mkdirSync(dist, { recursive: true });
 
 const sass = gulpSass(dartSass);
 let server;
 
+const excludePartials = ['!**/_*', '!**/_*/**/*'];
+const excludeTempFiles = ['!**/*~', '!**/#*'];
+
 function createSiteData() {
-    const obj = globSync('src/data/**/*.json').reduce(
-        (accum, next) => Object.assign(accum, next),
-        {}
-    );
+    const obj = globSync(['src/data/**/*.json', ...excludePartials])
+          .reduce(
+              (accum, next) => Object.assign(accum, next),
+              {}
+          );
     obj.cacheBuster = Date.now();
     console.log(JSON.stringify(obj, null, 4));
     return obj;
@@ -32,35 +39,41 @@ function createSiteData() {
 
 function sassTask() {
     console.log(`sassTask: executing`);
-    return gulp.src('src/styles/app.scss')
+    return gulp.src(['src/styles/**/*.scss', ...excludePartials])
+               .pipe(messageGenerator('compiling'))
                .pipe(sass())
-               .pipe(postcss([autoprefixer]))
-               .pipe(gulp.dest(`${dist}/styles`));
+               //.pipe(postcss([autoprefixer]))
+               .pipe(gulp.dest(`${dist}/split-flap/styles`))
+               .pipe(messageGenerator('wrote'));
 }
 
 function htmlTask() {
     console.log(`htmlTask: executing`);
-    return gulp.src('src/pages/**/*.html')
-               .pipe(data(createSiteData))
-               .pipe(nunjucks({ path: 'src/pages' }))
-               .pipe(gulp.dest(`${dist}`));
+    return gulp.src(['src/pages/**/*.html', ...excludePartials])
+               .pipe(messageGenerator('copying'))
+               .pipe(gulp.dest(`${dist}`))
+               .pipe(messageGenerator('wrote'));
 }
 
 function nunjucksTask() {
-    return gulp.src('src/pages/**/*.njk')
-               .pipe(nunjucks())
-               .pipe(gulp.dest(`${dist}`));
+    return gulp.src(['src/pages/**/*.njk', ...excludePartials], { base: 'src/pages' })
+               .pipe(messageGenerator('compiling'))
+               .pipe(data(createSiteData))
+               .pipe(nunjucks({ path: 'src/pages' }))
+               .pipe(gulp.dest(`${dist}`))
+               .pipe(messageGenerator('wrote'));
 }
 
 function rollupTask() {
     console.log(`rollupTask: executing`);
     return rollup
-        .rollup({ input: 'src/scripts/clock-page.js',
+        .rollup({ input: 'src/scripts/split-flap/clock-page.js',
                   plugins: [resolve(), babel({ babelHelpers: 'bundled' })] })
         .then(bundle => {
-            console.log(`rollupTask: generating bundle`);
+            const filename = `./${dist}/split-flap/scripts/main.js`;
+            console.log(colors.brightYellow(`rollupTask: generating ${path.resolve(filename)}`));
             return bundle.write({
-                file: `./${dist}/scripts/app.js`,
+                file: filename,
                 format: 'umd',
                 name: 'library',
             });
@@ -84,25 +97,37 @@ function reloadTask(cb) {
     if (server) {
         server.reload();
     }
-    cb();
+    cb?.();
 }
 
 function watchTask() {
     // never completes
     console.log(`watchTask: watching files`);
-    gulp.watch('src/pages/**/*.html', gulp.series(htmlTask, reloadTask));
-    gulp.watch('src/styles/**/*.scss', gulp.series(sassTask, reloadTask));
-    gulp.watch('src/scripts/**/*.js', gulp.series(rollupTask, reloadTask));
+    gulp.watch(['src/pages/**/*.html', ...excludeTempFiles], gulp.series(htmlTask, reloadTask));
+    gulp.watch(['src/pages/**/*.njk', ...excludeTempFiles], gulp.series(nunjucksTask, reloadTask));
+    gulp.watch(['src/styles/**/*.scss', ...excludeTempFiles], gulp.series(sassTask, reloadTask));
+    gulp.watch(['src/scripts/**/*.js', ...excludeTempFiles], gulp.series(rollupTask, reloadTask));
 }
 
 function staticTask() {
-    return gulp.src('public/**/*').pipe(gulp.dest(`${dist}`));
+    return gulp.src(['public/**/*', ...excludePartials])
+               .pipe(messageGenerator('copying'))
+               .pipe(gulp.dest(`${dist}`))
+               .pipe(messageGenerator('wrote'));
 }
 
-const buildTask = gulp.parallel(sassTask, htmlTask, rollupTask, staticTask);
+function cleanTask(cb) {
+    fs.rmSync(`${dist}`, { recursive: true });
+    cb?.();
+}
+
+const buildTask = gulp.series(
+    cleanTask,
+    gulp.parallel(sassTask, htmlTask, rollupTask, staticTask, nunjucksTask)
+);
 
 const devTask = gulp.series(
-    gulp.parallel(sassTask, htmlTask, rollupTask),
+    gulp.parallel(sassTask, htmlTask, rollupTask, nunjucksTask),
     gulp.parallel(serverTask, watchTask),
 );
 
@@ -117,4 +142,19 @@ export { nunjucksTask as nunjucks };
 function isDev() {
     const env = process.env.NODE_ENV;
     return env === "dev" || (env != null && env !== 'production');
+}
+
+function messageGenerator(thingy) {
+    return new Transform({
+        objectMode: true,
+        transform(record, encoding, callback) {
+            if (thingy === 'wrote') {
+                console.log(colors.brightYellow(`${thingy} ${record.path}`));
+            } else {
+                console.log(colors.green(`${thingy} ${record.path}`));
+            }
+            this.push(record);
+            callback(null);
+        }
+    });
 }
