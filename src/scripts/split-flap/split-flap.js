@@ -1,3 +1,5 @@
+/*jshint devel: true */
+
 const ROLL_CALL = true;
 
 import RollCall from './roll-call.js';
@@ -49,23 +51,42 @@ export class SplitFlap {
         this.transitionBottomElement.setAttribute('data-state', nextState);
         this.transitionTopElement.classList.add('xx--start');
         this.transitionBottomElement.classList.add('xx--start');
-        const iAmSpeedy = this.targetState !== nextState;
-        if (iAmSpeedy) {
-            if (!ROLL_CALL) {
-                this.transitionTopElement.classList.add('xx--speedy');
-                this.transitionBottomElement.classList.add('xx--speedy');
-            }
-        }
+        const speedy = this.targetState !== nextState;
+        let speedyCount;
+        let slowCount;
+        let whichRollCall;
         if (ROLL_CALL) {
-            firstRollCall.checkIn({ "go": true });
+            firstRollCall.checkIn({ "go": true, "speedy": speedy });
+            await firstRollCall.allCounted();
+            speedyCount = firstRollCall.countOf(x => x.go && x.speedy);
+            slowCount   = firstRollCall.countOf(x => x.go && !x.speedy);
+            console.log(speedyCount, slowCount);
+            if (speedyCount) {
+                if (!firstRollCall.speedyRollCall) {
+                    console.log(`created speedy rollcall`);
+                    firstRollCall.speedyRollCall = new RollCall(speedyCount);
+                }
+            }
+            if (slowCount) {
+                if (!firstRollCall.slowRollCall) {
+                    console.log(`created slow rollcall`);
+                    firstRollCall.slowRollCall = new RollCall(slowCount);
+                }
+            }
+            whichRollCall = speedy ? firstRollCall.speedyRollCall : firstRollCall.slowRollCall;
+        }
+        if (speedy) {
+            this.transitionTopElement.classList.add('xx--speedy');
+            this.transitionBottomElement.classList.add('xx--speedy');
         }
         let secondRollCall;
         if (ROLL_CALL) {
-            await firstRollCall.allCounted();
-            firstRollCall.once(() => this.reflow());
-            secondRollCall = (firstRollCall.secondRollCall =
-                              firstRollCall.secondRollCall ??
-                              new RollCall(firstRollCall.countOf(v => v?.go)));
+            whichRollCall.once(() => this.reflow());
+            if (!whichRollCall.secondRollCall) {
+                console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #2`);
+                whichRollCall.secondRollCall = new RollCall(speedy ? speedyCount : slowCount);
+            }
+            secondRollCall = whichRollCall.secondRollCall;
         } else {
             this.reflow();
         }
@@ -83,9 +104,11 @@ export class SplitFlap {
                 secondRollCall.checkIn();
                 await secondRollCall.allCounted();
                 secondRollCall.once(() => this.reflow());
-                thirdRollCall = (secondRollCall.thirdRollCall =
-                                 secondRollCall.thirdRollCall ?? 
-                                 new RollCall(firstRollCall.countOf(v => v?.go)));
+                if (!secondRollCall.thirdRollCall) {
+                    console.log(`creating ${speedy ? "speedy" : "slow"} rollcall #3`);
+                    secondRollCall.thirdRollCall = new RollCall(speedy ? speedyCount : slowCount);
+                }
+                thirdRollCall = secondRollCall.thirdRollCall;
             } else {
                 this.reflow();
             }
