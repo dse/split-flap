@@ -7,10 +7,8 @@
         <link rel="manifest" href="manifest.json">
         <title>Flip Clock</title>
         <script src="/split-flap/scripts/special-start.js?v={{cacheBuster}}"></script>
-
-        <!-- rollup/babel will never know! -->
         <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=requestAnimationFrame%2CString.prototype.padStart%2CURL%2Cfetch"></script>
-
+        <!-- ^^^ rollup/babel will never know! -->
         <meta http-equiv="Permissions-Policy" content="screen-wake-lock=(self https://*.webonastick.com https://webonastick.com http://localhost http://localhost:3000)">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
