@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <link rel="manifest" href="manifest.json">
+        <title>Flip Clock</title>
+        <script src="/split-flap/scripts/special-start.js?v=1754182463408"></script>
+
+        <!-- rollup/babel will never know! -->
+        <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=requestAnimationFrame%2CString.prototype.padStart%2CURL%2Cfetch"></script>
+
+        <meta http-equiv="Permissions-Policy" content="screen-wake-lock=(self https://*.webonastick.com https://webonastick.com http://localhost http://localhost:3000)">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><!-- default, black, and black-translucent -->
+        <meta name="apple-mobile-web-app-title" content="Flip Clock">
+        <link rel="stylesheet" href="/split-flap/styles/main.css">
+    </head>
+    <body>
+        <div class="viewmaster__stack">
+            <div class="viewmaster__wrapper viewmaster__wrapper--bottom viewmaster__wrapper--highlight" id="date">
+                <div class="viewmaster viewmaster--date">
+                    <div class="split-flap" id="dayOfWeek">
+                        <div class="split-flap__inner">
+                            <div data-top class="split-flap__half split-flap__half--upper"></div>
+                            <div data-bottom class="split-flap__half split-flap__half--lower"></div>
+                            <div data-transition-top class="split-flap__half split-flap__half--upper-transition"></div>
+                            <div data-transition-bottom class="split-flap__half split-flap__half--lower-transition"></div>
+                        </div>
+                        <div class="split-flap__shadow split-flap__shadow--1"></div>
+                        <div class="split-flap__shadow split-flap__shadow--2"></div>
+                        <div class="split-flap__shadow split-flap__shadow--3"></div>
+                        <div class="split-flap__shadow split-flap__shadow--4"></div>
+                    </div>
+                    <div class="split-flap" id="dayOfMonth">
+                        <div class="split-flap__inner">
+                            <div data-top class="split-flap__half split-flap__half--upper"></div>
+                            <div data-bottom class="split-flap__half split-flap__half--lower"></div>
+                            <div data-transition-top class="split-flap__half split-flap__half--upper-transition"></div>
+                            <div data-transition-bottom class="split-flap__half split-flap__half--lower-transition"></div>
+                        </div>
+                        <div class="split-flap__shadow split-flap__shadow--1"></div>
+                        <div class="split-flap__shadow split-flap__shadow--2"></div>
+                        <div class="split-flap__shadow split-flap__shadow--3"></div>
+                        <div class="split-flap__shadow split-flap__shadow--4"></div>
+                    </div>
+                    <div class="split-flap" id="month">
+                        <div class="split-flap__inner">
+                            <div data-top class="split-flap__half split-flap__half--upper"></div>
+                            <div data-bottom class="split-flap__half split-flap__half--lower"></div>
+                            <div data-transition-top class="split-flap__half split-flap__half--upper-transition"></div>
+                            <div data-transition-bottom class="split-flap__half split-flap__half--lower-transition"></div>
+                        </div>
+                        <div class="split-flap__shadow split-flap__shadow--1"></div>
+                        <div class="split-flap__shadow split-flap__shadow--2"></div>
+                        <div class="split-flap__shadow split-flap__shadow--3"></div>
+                        <div class="split-flap__shadow split-flap__shadow--4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="viewmaster__wrapper viewmaster__wrapper--bottom viewmaster__wrapper--highlight" id="time">
+                <div class="viewmaster viewmaster--time">
+                    <div class="split-flap" id="hours">
+                        <div class="split-flap__inner">
+                            <div data-top class="split-flap__half split-flap__half--upper"></div>
+                            <div data-bottom class="split-flap__half split-flap__half--lower"></div>
+                            <div data-transition-top class="split-flap__half split-flap__half--upper-transition"></div>
+                            <div data-transition-bottom class="split-flap__half split-flap__half--lower-transition"></div>
+                        </div>
+                        <div class="split-flap__shadow split-flap__shadow--1"></div>
+                        <div class="split-flap__shadow split-flap__shadow--2"></div>
+                        <div class="split-flap__shadow split-flap__shadow--3"></div>
+                        <div class="split-flap__shadow split-flap__shadow--4"></div>
+                    </div>
+                    <div class="split-flap" id="minutes">
+                        <div class="split-flap__inner">
+                            <div data-top class="split-flap__half split-flap__half--upper"></div>
+                            <div data-bottom class="split-flap__half split-flap__half--lower"></div>
+                            <div data-transition-top class="split-flap__half split-flap__half--upper-transition"></div>
+                            <div data-transition-bottom class="split-flap__half split-flap__half--lower-transition"></div>
+                        </div>
+                        <div class="split-flap__shadow split-flap__shadow--1"></div>
+                        <div class="split-flap__shadow split-flap__shadow--2"></div>
+                        <div class="split-flap__shadow split-flap__shadow--3"></div>
+                        <div class="split-flap__shadow split-flap__shadow--4"></div>
+                    </div>
+                    <div class="split-flap" id="seconds">
+                        <div class="split-flap__inner">
+                            <div data-top class="split-flap__half split-flap__half--upper"></div>
+                            <div data-bottom class="split-flap__half split-flap__half--lower"></div>
+                            <div data-transition-top class="split-flap__half split-flap__half--upper-transition"></div>
+                            <div data-transition-bottom class="split-flap__half split-flap__half--lower-transition"></div>
+                        </div>
+                        <div class="split-flap__shadow split-flap__shadow--1"></div>
+                        <div class="split-flap__shadow split-flap__shadow--2"></div>
+                        <div class="split-flap__shadow split-flap__shadow--3"></div>
+                        <div class="split-flap__shadow split-flap__shadow--4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="togglesArea" class="toggles-area">
+            <a data-toggle-prefs class="prefs-toggle" id="prefsToggle" href="javascript:void(0);"></a> <!-- U+2699 GEAR -->
+            <a data-toggle-console class="console-toggle" id="consoleToggle" href="javascript:void(0);"></a> <!-- U+2699 GEAR -->
+        </div>
+        <div id="prefsModal" class="modal modal--prefs">
+            <div id="prefsModalBackingLayer" class="modal__backing-layer">
+            </div>
+            <div class="modal__screen">
+                <form id="prefsForm" class="prefs-form">
+                    <h1>
+                        Preferences
+                    </h1>
+                    <label>
+                        <input type="checkbox" id="twentyFourHourCheckbox" name="twentyFourHour">
+                        24-hour
+                    </label>
+                </form>
+                <div class="modal-close-area">
+                    <a id="closePrefsModal" class="modal-close-button" href="javascript:void(0);"></a>
+                </div>
+            </div>
+        </div>
+        <div id="pwa" class="pwa">
+            <a data-pwa-install class="button button--primary" href="javascript:void(0);">Install this web app</a>
+            <a data-pwa-dismiss class="button button--dismiss" href="javascript:void(0);">Dismiss</a>
+        </div>
+        <script src="/split-flap/scripts/main.js?v=1754182463408"></script>
+        <script src="/split-flap/scripts/special.js?v=1754182463408"></script>
+    </body>
+</html>
