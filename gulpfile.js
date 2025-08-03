@@ -110,7 +110,7 @@ function watchTask() {
 }
 
 function staticTask() {
-    return gulp.src(['public/**/*', ...excludePartials])
+    return gulp.src(['public/**/*', ...excludePartials], { encoding: false })
                .pipe(messageGenerator('copying'))
                .pipe(gulp.dest(`${dist}`))
                .pipe(messageGenerator('wrote'));
