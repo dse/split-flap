@@ -15,7 +15,7 @@ export default class Reflow {
             this.resolve = resolve;
             resolve();
         });
-        this.reflowCompleted = false;
+        this.completed = false;
         this.trueCount = 0;
         this.falseCount = 0;
     }
@@ -37,15 +37,15 @@ export default class Reflow {
             }
         });
     }
-    reflow(elt) {
-        if (this.reflowCompleted) {
+    ready(fn) {
+        if (this.completed) {
             // console.log(`Reflow #${this.id}: reflow already triggered`);
             return false;
         }
         reflowCount += 1;
         console.log(`Reflow #${this.id}: triggering reflow #${reflowCount}`);
-        this.reflowCompleted = true;
-        void elt.offsetHeight;  // triggers the reflow
+        this.completed = true;
+        fn();
         return true;
     }
 }

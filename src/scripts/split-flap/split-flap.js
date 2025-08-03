@@ -1,6 +1,6 @@
-const REFLOW = true;
+const CATCH_UP = true;
 
-import Reflow from './reflow.js';
+import CatchUp from './reflow.js';
 
 export class SplitFlap {
     constructor(element, start, end, strings) {
@@ -29,11 +29,11 @@ export class SplitFlap {
         this.targetState = start;
         this.update();
     }
-    async transition(firstReflow) {
+    async transition(firstCatchUp) {
         if (this.state === this.targetState) {
             this.transitioning = false;
-            if (REFLOW) {
-                firstReflow.tick(false);
+            if (CATCH_UP) {
+                firstCatchUp.tick(false);
             }
             return;
         }
@@ -50,21 +50,21 @@ export class SplitFlap {
         this.transitionTopElement.classList.add('xx--start');
         this.transitionBottomElement.classList.add('xx--start');
         if (this.targetState !== nextState) {
-            if (!REFLOW) {
+            if (!CATCH_UP) {
                 this.transitionTopElement.classList.add('xx--speedy');
                 this.transitionBottomElement.classList.add('xx--speedy');
             }
         }
-        if (REFLOW) {
-            firstReflow.tick(true);
+        if (CATCH_UP) {
+            firstCatchUp.tick(true);
         }
-        let secondReflow;
-        if (REFLOW) {
-            await firstReflow.promise;
-            firstReflow.reflow(this.element);
-            secondReflow = (firstReflow.secondReflow =
-                            firstReflow.secondReflow ??
-                            new Reflow(firstReflow.trueCount));
+        let secondCatchUp;
+        if (CATCH_UP) {
+            await firstCatchUp.promise;
+            firstCatchUp.ready(() => this.reflow());
+            secondCatchUp = (firstCatchUp.secondCatchUp =
+                             firstCatchUp.secondCatchUp ??
+                             new CatchUp(firstCatchUp.trueCount));
         } else {
             this.reflow();
         }
@@ -76,20 +76,20 @@ export class SplitFlap {
         let handler2Executed = 0;
         let timeout1;
         let timeout2;
-        let thirdReflow;
+        let thirdCatchUp;
         let finish = async function () {
-            if (REFLOW) {
-                secondReflow.tick();
-                await secondReflow.promise;
-                secondReflow.reflow(this.element);
-                thirdReflow = (secondReflow.thirdReflow =
-                               secondReflow.thirdReflow ??
-                               new Reflow(firstReflow.trueCount));
+            if (CATCH_UP) {
+                secondCatchUp.tick();
+                await secondCatchUp.promise;
+                secondCatchUp.ready(() => this.reflow());
+                thirdCatchUp = (secondCatchUp.thirdCatchUp =
+                                secondCatchUp.thirdCatchUp ??
+                                new CatchUp(firstCatchUp.trueCount));
             } else {
                 this.reflow();
             }
             this.state = nextState;
-            await this.transition(thirdReflow);
+            await this.transition(thirdCatchUp);
         }.bind(this);
         let handler1 = async function (event) {
             if (timeout1) {
@@ -133,22 +133,22 @@ export class SplitFlap {
         timeout1 = setTimeout(handler1, ms);
         timeout2 = setTimeout(handler2, ms);
     }
-    async transitionTo(targetState, firstReflow) {
+    async transitionTo(targetState, firstCatchUp) {
         this.targetState = targetState;
         if (this.transitioning) {
-            if (REFLOW) {
-                firstReflow.tick(false);
+            if (CATCH_UP) {
+                firstCatchUp.tick(false);
             }
             return;
         }
         if (this.state === this.targetState) {
-            if (REFLOW) {
-                firstReflow.tick(false);
+            if (CATCH_UP) {
+                firstCatchUp.tick(false);
             }
             return;
         }
         this.transitioning = true;
-        await this.transition(firstReflow);
+        await this.transition(firstCatchUp);
     }
     reflow() {
         /*jshint -W030 */
