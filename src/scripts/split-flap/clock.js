@@ -7,8 +7,6 @@ import {
     SecondSplitFlap,
 } from './split-flap.js';
 
-import RollCall from './roll-call.js';
-
 export default class Clock {
     constructor() {
         this.id = "clock";
@@ -27,13 +25,13 @@ export default class Clock {
     }
     update() {
         let date = new Date();
-        const rollCall = new RollCall(6);
-        this.ddd.transitionTo(date.getDay(), rollCall);
-        this.dd.transitionTo(date.getDate(), rollCall);
-        this.mmm.transitionTo(date.getMonth(), rollCall);
-        this.hh.transitionTo(date.getHours(), rollCall);
-        this.mm.transitionTo(date.getMinutes(), rollCall);
-        this.ss.transitionTo(date.getSeconds(), rollCall);
+        const data = {};
+        this.ddd.transitionTo(date.getDay(), data);
+        this.dd.transitionTo(date.getDate(), data);
+        this.mmm.transitionTo(date.getMonth(), data);
+        this.hh.transitionTo(date.getHours(), data);
+        this.mm.transitionTo(date.getMinutes(), data);
+        this.ss.transitionTo(date.getSeconds(), data);
     }
     start() {
         if (this.timeout) {
