@@ -71,23 +71,6 @@ body {
     width: 2.5ch;
 }
 
-.button {
-    --background-color: #333;
-    background-color: var(--background-color);
-    color: white;
-    appearance: none;
-    padding: 0.25em 0.75em;
-    text-decoration: none;
-    display: inline-block;
-    border: 2px outset var(--background-color);
-    background-image: var(--gradient);
-}
-.button--primary {
-    --background-color: #024;
-}
-.button--dismiss {
-    --background-color: #700;
-}
 .toggles-area {
     position: fixed;
     bottom: 0;
