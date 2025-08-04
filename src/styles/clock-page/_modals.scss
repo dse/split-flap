@@ -1,0 +1,41 @@
+.modal {
+    display: none;
+}
+.modal__backing-layer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modal__screen {
+    width: 40rem;
+    max-width: 80%;
+    position: fixed;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--frame-background-color);
+    border: 1px outset var(--frame-background-color);
+    background-image: var(--gradient);
+    padding: 2rem;
+    z-index: 20;
+}
+.modal .modal-close-area {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 200%;
+    padding: 0.5em;
+    color: white;
+    text-shadow: 1px 1px 0 black, 2px 2px 0 black;
+    opacity: 0.1875;
+    z-index: 10;
+}
+.modal-close-button {
+    color: inherit;
+    text-decoration: none;
+}
+.modal-close-button::before {
+    line-height: 0.5;
+    font-size: calc(100% * 7/5);
+    content: '\00d7';           /* U+00D7 MULTIPLICATION SIGN */
+}
