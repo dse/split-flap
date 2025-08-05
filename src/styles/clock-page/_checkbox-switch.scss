@@ -1,16 +1,31 @@
+$cs-indicator-color: orange;
+$cs-B-indicator-color: yellow;
 :root {
     --cs-width: 2cap;
     --cs-height: 1cap;
     --cs-border-width: 4px;
     --cs-padding: 4px;
     --cs-switch-border-width: 4px;
-    --cs-add-clickable: 1em;
+    --cs-add-clickable: 0.25em;
     --cs-border-color: #ddd;
-    --cs-indicator-color: orange;
+    --cs-indicator-color: #{$cs-indicator-color};
     --cs-switch-color: #ddd;
     --cs-switch-highlight-color: #fff;
     --cs-switch-shadow-color: #bbb;
-    --cs-transition-time: 300ms;
+    --cs-transition-time: 200ms;
+
+    --cs-B-width: 2cap;
+    --cs-B-height: 1cap;
+    --cs-B-border-width: 4px;
+    --cs-B-padding: 8px;
+    --cs-B-switch-border-width: 4px;
+    --cs-B-add-clickable: 0.25em;
+    --cs-B-border-color: #bbb;
+    --cs-B-indicator-color: #{$cs-B-indicator-color};
+    --cs-B-switch-color: #bbb;
+    --cs-B-switch-highlight-color: #ddd;
+    --cs-B-switch-shadow-color: #999;
+    --cs-B-transition-time: 200ms;
 }
 .checkbox-switch {
     appearance: none;
@@ -63,6 +78,47 @@
         }
         &::after {
             left: calc(var(--cs-padding) - var(--cs-height) + var(--cs-width));
+        }
+    }
+}
+.checkbox-switch-B {
+    appearance: none;
+    height: calc(var(--cs-B-height) + 2 * var(--cs-B-add-clickable));
+    width: calc(var(--cs-B-width) + 2 * var(--cs-B-add-clickable));
+    margin-left: calc(-1 * var(--cs-B-add-clickable));
+    margin-right: calc(-1 * var(--cs-B-add-clickable));
+    margin-top: calc(-1 * var(--cs-B-add-clickable));
+    margin-bottom: calc(-1 * var(--cs-B-add-clickable));
+    position: relative;
+    + .checkbox-switch-B__switch {
+        position: relative;
+        pointer-events: none;
+        margin-left: calc(-1 * var(--cs-B-width));
+        display: inline-block;
+        border-radius: var(--cs-B-height);
+        height: var(--cs-B-height);
+        width: var(--cs-B-width);
+        border-radius: var(--cs-B-height);
+        background-color: var(--cs-B-switch-color);
+        background-image: linear-gradient(to bottom, var(--cs-B-switch-highlight-color), var(--cs-B-switch-shadow-color));
+        border: var(--cs-B-switch-border-width) solid var(--cs-B-switch-color);
+        &::before {
+            content: '';
+            position: absolute;
+            inset: calc(var(--cs-B-height) / 5);
+            background-color: black;
+            background-image: linear-gradient(to bottom, rgb($cs-indicator-color, 0.4), rgb($cs-indicator-color, 0.6));
+            border: var(--cs-B-switch-border-width) solid rgb($cs-indicator-color, 0.5);
+            border-radius: var(--cs-B-height);
+            transition-properties: opacity, background-color, background-image, box-shadow, border-color;
+            transition-duration: var(--cs-transition-time);
+        }
+    }
+    &:checked + .checkbox-switch-B__switch {
+        &::before {
+            background-image: linear-gradient(to bottom, rgb($cs-B-indicator-color, 1), rgb($cs-B-indicator-color, 0.9));
+            border: var(--cs-B-switch-border-width) solid rgb($cs-B-indicator-color, 0.9);
+            box-shadow: 0 0 var(--cs-B-height) var(--cs-B-indicator-color);
         }
     }
 }
