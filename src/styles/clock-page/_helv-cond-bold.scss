@@ -10,6 +10,11 @@
 .clock-page--helvetica-condensed-bold .nn[data-number] {
     display: block;             /* required for ::first-letter to work */
 }
+
+/**
+ * Because that font doesn't support the 'pnum' feature, we get to fix
+ * the oddball spacing around the digit one '1' ourselves.
+ */
 .clock-page--helvetica-condensed-bold .nn[data-number]::first-letter {
     letter-spacing: 0em;        /* first digit */
 }
