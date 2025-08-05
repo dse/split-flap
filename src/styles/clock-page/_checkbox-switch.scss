@@ -1,0 +1,68 @@
+:root {
+    --cs-width: 2cap;
+    --cs-height: 1cap;
+    --cs-border-width: 4px;
+    --cs-padding: 4px;
+    --cs-switch-border-width: 4px;
+    --cs-add-clickable: 1em;
+    --cs-border-color: #ddd;
+    --cs-indicator-color: orange;
+    --cs-switch-color: #ddd;
+    --cs-switch-highlight-color: #fff;
+    --cs-switch-shadow-color: #bbb;
+    --cs-transition-time: 300ms;
+}
+.checkbox-switch {
+    appearance: none;
+    height: calc(var(--cs-height) + 2 * var(--cs-add-clickable));
+    width: calc(var(--cs-width) + 2 * var(--cs-add-clickable));
+    margin-left: calc(-1 * var(--cs-add-clickable));
+    margin-right: calc(-1 * var(--cs-add-clickable));
+    margin-top: calc(-1 * var(--cs-add-clickable));
+    margin-bottom: calc(-1 * var(--cs-add-clickable));
+    + .checkbox-switch__switch {
+        pointer-events: none;
+        margin-left: calc(-1 * var(--cs-width));
+        position: relative;
+        display: inline-block;
+        border-radius: var(--cs-height);
+        height: var(--cs-height);
+        width: var(--cs-width);
+        border: var(--cs-border-width) solid var(--cs-border-color);
+        background-color: black;
+        padding: var(--cs-padding);
+        overflow: hidden;
+        &::before {
+            content: '';
+            position: absolute;
+            top: var(--cs-padding);
+            left: calc(var(--cs-height) - var(--cs-width) - 3 * var(--cs-padding));
+            width: calc(var(--cs-width));
+            height: calc(var(--cs-height) - 2 * var(--cs-border-width) - 2 * var(--cs-padding));
+            border-radius: var(--cs-height);
+            background-color: var(--cs-indicator-color);
+            transition: left var(--cs-transition-time);
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            top: var(--cs-padding);
+            left: var(--cs-padding);
+            width: calc(var(--cs-height) - 2 * var(--cs-border-width) - 2 * var(--cs-padding));
+            height: calc(var(--cs-height) - 2 * var(--cs-border-width) - 2 * var(--cs-padding));
+            border-radius: var(--cs-height);
+            background-color: var(--cs-switch-color);
+            background-image: linear-gradient(to bottom, var(--cs-switch-highlight-color), var(--cs-switch-shadow-color));
+            border: var(--cs-switch-border-width) solid var(--cs-switch-color);
+            transition: left var(--cs-transition-time);
+        }
+    }
+    &:checked + .checkbox-switch__switch {
+        &::before {
+            left: calc(-3 * var(--cs-padding));
+        }
+        &::after {
+            left: calc(var(--cs-padding) - var(--cs-height) + var(--cs-width));
+        }
+    }
+}
