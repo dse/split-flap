@@ -5,7 +5,7 @@ const DIST = DEV_MODE ? '_dev/dist/web' : 'dist/web';
 
 // Base URL for flip clock page.
 // DO NOT APPEND A TRAILING SLASH.  FOR DOCUMENT ROOT USE AN EMPTY STRING.
-const PAGE_BASE_URL = '/split-flap';
+const PAGE_BASE_URL = '/flip-clock';
 
 function getDevMode() {
     const env = process.env.NODE_ENV;
