@@ -1,4 +1,4 @@
-import Clock from './clock.js';
+import Clock from '../split-flap/clock.js';
 import initPwa from './pwa.js';
 
 function setupFromQueryString() {

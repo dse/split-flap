@@ -1,8 +1,8 @@
 @use "normalize";
 @use "variables";
-@use "split-flap";
-@use "viewmaster";
-@use "clock-page";
+@use "split-flap/split-flap";
+@use "split-flap/viewmaster";
+@use "clock-page/clock-page";
 @use "clock-page/helv-cond-bold";
 @use "clock-page/arial-black";
 @use "clock-page/fonts";

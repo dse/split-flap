@@ -6,7 +6,7 @@ import { DIST, PAGE_BASE_URL } from './constants.js';
 
 export function rollupBuild1() {
     return rollup
-        .rollup({ input: `src/scripts${PAGE_BASE_URL}/clock-page.js`,
+        .rollup({ input: `src/scripts/clock-page/clock-page.js`,
                   plugins: [resolve(), babel({ babelHelpers: 'bundled' })] })
         .then(bundle => {
             const filename = `./${DIST}${PAGE_BASE_URL}/scripts/main.js`;
@@ -20,7 +20,7 @@ export function rollupBuild1() {
 
 export function rollupBuild2() {
     return rollup
-        .rollup({ input: `src/scripts${PAGE_BASE_URL}/pwa-sw.js`,
+        .rollup({ input: `src/scripts/clock-page/pwa-sw.js`,
                   plugins: [resolve(), babel({ babelHelpers: 'bundled' })] })
         .then(bundle => {
             const filename = `./${DIST}${PAGE_BASE_URL}/scripts/pwa-sw.js`;
