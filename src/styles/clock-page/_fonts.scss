@@ -1,7 +1,7 @@
-.clock-page--arial .viewmaster {
+.clock-page--arial {
     font-family: 'Arial', sans-serif;
 }
-.clock-page--italic .viewmaster {
+.clock-page--italic {
     font-style: italic;
 }
 .clock-page--bold .viewmaster--date {
@@ -11,7 +11,7 @@
     font-weight: bold;
 }
 
-.clock-page--times .viewmaster {
+.clock-page--times {
     font-family: 'Times New Roman', 'Times Roman', 'Times', sans-serif;
 }
 .clock-page--times #date {
@@ -20,7 +20,7 @@
 .clock-page--times #time {
     font-size: 22.5vw;
 }
-.clock-page--futura .viewmaster {
+.clock-page--futura {
     font-family: 'Futura', sans-serif;
 }
 .clock-page--futura {
@@ -29,7 +29,7 @@
 .clock-page--futura #date { font-size:  6.5vw; }
 .clock-page--futura #time { font-size: 19.5vw; }
 
-.clock-page--helvetica .viewmaster {
+.clock-page--helvetica {
     font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
 }
 
