@@ -1,0 +1,25 @@
+:root {
+    --install-btn-border-radius: 0.5em;
+    --install-btn-dimensionless-line-height: 1;
+    --install-btn-border-top: 1px solid rgba(255, 255, 255, 0.25);
+    --install-btn-border-bottom: 1px solid black;
+    --install-btn-color: rgb(225, 225, 225);
+    --install-btn-background-color: rgb(42, 42, 42);
+}
+.install-btn-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    font-size: 200%;
+    padding: 0.5em;
+}
+.install-btn {
+    appearance: none;
+    background-color: var(--install-btn-background-color);
+    color: var(--install-btn-color);
+    border-radius: var(--install-btn-border-radius);
+    border-top: var(--install-btn-border-top);
+    border-bottom: var(--install-btn-border-bottom);
+    line-height: var(--install-btn-dimensionless-line-height);
+    padding: 0.25em 0.5em;
+}
