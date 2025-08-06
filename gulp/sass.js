@@ -2,7 +2,7 @@ import gulp from 'gulp';
 import gulpSass from 'gulp-sass';
 import * as dartSass from 'sass';
 
-import { DIST, EXCLUDE_PARTIALS } from './constants.js';
+import { DIST, EXCLUDE_PARTIALS, PAGE_BASE_URL } from './constants.js';
 
 const sass = gulpSass(dartSass);
 
@@ -13,5 +13,5 @@ export default function sassTask() {
     return gulp.src(['src/styles/**/*.scss', ...EXCLUDE_PARTIALS])
                .pipe(sass(sassConfig))
     // .pipe(postcss([autoprefixer]))
-               .pipe(gulp.dest(`${DIST}/split-flap/styles`));
+               .pipe(gulp.dest(`${DIST}${PAGE_BASE_URL}/styles`));
 }

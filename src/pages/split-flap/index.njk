@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
         <link rel="manifest" href="manifest.json">
         <title>Flip Clock</title>
-        <script src="/split-flap/scripts/special-at-start.js?v={{cacheBuster}}"></script>
+        <script src="{{pageBaseUrl}}/scripts/special-at-start.js?v={{cacheBuster}}"></script>
         <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=requestAnimationFrame%2CString.prototype.padStart%2CURL%2Cfetch"></script>
         <!-- ^^^ rollup/babel will never know! -->
         <meta http-equiv="Permissions-Policy" content="screen-wake-lock=(self https://*.webonastick.com https://webonastick.com http://localhost http://localhost:3000)">
@@ -16,7 +16,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><!-- default, black, and black-translucent -->
         <meta name="apple-mobile-web-app-title" content="Flip Clock">
-        <link rel="stylesheet" href="/split-flap/styles/main.css?v={{cacheBuster}}">
+        <link rel="stylesheet" href="{{pageBaseUrl}}/styles/main.css?v={{cacheBuster}}">
     </head>
     <body>
         <div class="viewmaster__stack">
@@ -131,7 +131,7 @@
                 </div>
             </div>
         </div>
-        <script src="/split-flap/scripts/main.js?v={{cacheBuster}}"></script>
-        <script src="/split-flap/scripts/special-at-end.js?v={{cacheBuster}}"></script>
+        <script src="{{pageBaseUrl}}/scripts/main.js?v={{cacheBuster}}"></script>
+        <script src="{{pageBaseUrl}}/scripts/special-at-end.js?v={{cacheBuster}}"></script>
     </body>
 </html>

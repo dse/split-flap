@@ -4,7 +4,10 @@
 
 :root {
     --frame-background-color: rgb(51, 51, 51);
+
+    // TODO: import PAGE_BASE_URL into sass.
     --frame-background-image: url("/split-flap/images/brushed-metal-50-100.jpg");
+
     --frame-background-blend-mode: multiply;
     --highlight: rgba(255, 255, 255, 0.125);
     --shadow: rgba(0, 0, 0, 0.25);
