@@ -1,5 +1,5 @@
 import { globSync }  from 'glob';
-import { EXCLUDE_PARTIALS, PAGE_BASE_URL } from './constants.js';
+import { EXCLUDE_PARTIALS, PAGE_BASE_URL, DEV_MODE } from './constants.js';
 
 export default function createSiteData() {
     const obj = globSync(['src/data/**/*.json', ...EXCLUDE_PARTIALS])
@@ -10,6 +10,7 @@ export default function createSiteData() {
     obj.cacheBuster = Date.now();
     Object.assign(obj, {
         pageBaseUrl: PAGE_BASE_URL,
+        devMode: DEV_MODE,
     });
     return obj;
 }
