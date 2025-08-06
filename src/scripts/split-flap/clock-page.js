@@ -1,4 +1,5 @@
 import Clock from './clock.js';
+import initPwa from './pwa.js';
 
 function setupFromQueryString() {
     let sp = new URL(location.href).searchParams;
@@ -74,8 +75,12 @@ function setupPrefs() {
 }
 
 window.addEventListener('load', function () {
+    if (['127.0.0.1', 'localhost'].includes(window.location.hostname)) {
+        document.getElementById('installBtn').hidden = false;
+    }
     setupFromQueryString();
     clock = new Clock();
     setupPrefs();
+    initPwa();
     clock.start();
 });
