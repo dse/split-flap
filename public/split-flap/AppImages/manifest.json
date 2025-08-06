@@ -1,6 +1,12 @@
 {
+    "id": "com.webonastick.split-flap",
     "name": "Flip Clock",
     "short_name": "Flip Clock",
+    "start_url": "https://webonastick.com/split-flap/",
+    "display": "fullscreen",
+    "theme_color": "#cccccc",
+    "background_color": "#222222",
+    "orientation": "landscape",
     "icons": [
         {
             "src": "AppImages/windows11/SmallTile.scale-100.png",
@@ -450,11 +456,5 @@
             "src": "AppImages/ios/1024.png",
             "sizes": "1024x1024"
         }
-    ],
-    "start_url": "https://webonastick.com/split-flap/",
-    "display": "fullscreen",
-    "id": "com.webonastick.split-flap",
-    "theme_color": "#cccccc",
-    "background_color": "#222222",
-    "orientation": "landscape"
+    ]
 }
